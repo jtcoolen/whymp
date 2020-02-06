@@ -1,0 +1,4 @@
+[submodule "why3"]
+	path = why3
+	url = https://gitlab.inria.fr/why3/why3.git
+	branch = wmpz

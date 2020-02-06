@@ -1,0 +1,10 @@
+generated-src/aclocal.m4
+generated-src/ChangeLog
+generated-src/compile
+generated-src/configure
+generated-src/COPYING
+generated-src/depcomp
+generated-src/INSTALL
+generated-src/install-sh
+generated-src/Makefile.in
+generated-src/missing
