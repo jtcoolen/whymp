@@ -1,3 +1,5 @@
+#ifndef SQRT_H_INCLUDED
+
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -10,3 +12,5 @@ uint64_t wmpn_dc_sqrtrem(uint64_t * sp, uint64_t * np, int32_t n,
 
 int32_t wmpn_sqrtrem(uint64_t * sp, uint64_t * rp, uint64_t * np, int32_t n);
 
+#define SQRT_H_INCLUDED
+#endif // SQRT_H_INCLUDED

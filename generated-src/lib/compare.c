@@ -17,8 +17,7 @@
 
 #include "types.h"
 
-int32_t wmpn_cmp(uint64_t * x, uint64_t * y, int32_t sz)
-{
+int32_t wmpn_cmp(uint64_t * x, uint64_t * y, int32_t sz) {
   int32_t i;
   uint64_t lx, ly;
   i = sz;

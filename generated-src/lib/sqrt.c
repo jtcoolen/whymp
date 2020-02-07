@@ -23,13 +23,19 @@
 
 #include "compare.h"
 
-#include "util.h"
+#include "utilold.h"
 
-#include "add.h"
+#include "add_1.h"
 
-#include "sub.h"
+#include "addold.h"
+
+#include "sub_1.h"
+
+#include "subold.h"
 
 #include "mul.h"
+
+#include "logicalutil.h"
 
 #include "logical.h"
 
@@ -37,10 +43,13 @@
 
 #include "sqrt1.h"
 
+#include "alias.h"
+
+#include "explog.h"
+
 #include "toom.h"
 
-uint64_t wmpn_sqrtrem2(uint64_t * sp, uint64_t * rp, uint64_t * np)
-{
+uint64_t wmpn_sqrtrem2(uint64_t * sp, uint64_t * rp, uint64_t * np) {
   uint64_t np0, o, prec, nph, rq, u, uh;
   uint64_t sp0, rp0, q;
   int64_t cc;
@@ -87,8 +96,7 @@ uint64_t wmpn_dc_sqrtrem(uint64_t * sp, uint64_t * np, int32_t n,
                          uint64_t * scratch);
 
 uint64_t wmpn_dc_sqrtrem(uint64_t * sp, uint64_t * np, int32_t n,
-                         uint64_t * scratch)
-{
+                         uint64_t * scratch) {
   uint64_t r;
   int32_t l, h;
   uint64_t * npqt;
@@ -97,7 +105,10 @@ uint64_t wmpn_dc_sqrtrem(uint64_t * sp, uint64_t * np, int32_t n,
   uint64_t o, sl, sh;
   uint64_t * npl;
   int64_t c;
-  uint64_t st, ql, qh, cqt;
+  uint64_t * nr;
+  uint64_t * nx;
+  struct __open_shift_sep_result struct_res;
+  uint64_t res, st, ql, qh, cqt;
   uint64_t * npn;
   int32_t ll;
   uint64_t bo, b, bo1, o1, cqt1;
@@ -116,30 +127,35 @@ uint64_t wmpn_dc_sqrtrem(uint64_t * sp, uint64_t * np, int32_t n,
     o = wmpn_dc_sqrtrem(spl, npqt, h, scratch);
     q = o;
     if (!(q == UINT64_C(0))) {
-      wmpn_sub_in_place(npqt, h, spl, h);
+      wmpn_sub_n_in_place(npqt, spl, h);
     }
     IGNORE2(np, npqt);
     npl = np + l;
-    wmpn_tdiv_qr_in_place(scratch, npl, n, spl, h);
+    wmpn_tdiv_qr_in_place(scratch, 0, npl, n, spl, h);
     sl = scratch[l];
     q = q + sl;
     sh = *scratch;
     c = (int64_t)(sh % UINT64_C(2));
-    wmpn_rshift(sp, scratch, l, UINT64_C(1));
+    struct_res = open_shift_sep(sp, scratch, l);
+    nr = struct_res.__field_0;
+    nx = struct_res.__field_1;
+    res = wmpn_rshift(nr, nx, l, UINT64_C(1));
+    IGNORE2(sp,scratch);
+    res;
     st = sp[l - 1];
     ql = q << ((64) - UINT64_C(1));
     qh = q >> UINT64_C(1);
     sp[l - 1] = st + ql;
     q = qh;
     if (!(c == INT64_C(0))) {
-      cqt = wmpn_add_in_place(npl, h, spl, h);
+      cqt = wmpn_add_n_in_place(npl, spl, h);
       c = (int64_t)cqt;
     }
     IGNORE2(np, npl);
     npn = np + n;
     wmpn_mul(npn, sp, l, sp, l);
     ll = 2 * l;
-    bo = wmpn_sub_in_place(np, ll, npn, ll);
+    bo = wmpn_sub_n_in_place(np, npn, ll);
     b = q + bo;
     if (l == h) {
       c = c - (int64_t)b;
@@ -170,8 +186,7 @@ uint64_t wmpn_dc_sqrtrem(uint64_t * sp, uint64_t * np, int32_t n,
 
 int32_t wmpn_sqrtrem(uint64_t * sp, uint64_t * rp, uint64_t * np, int32_t n);
 
-int32_t wmpn_sqrtrem(uint64_t * sp, uint64_t * rp, uint64_t * np, int32_t n)
-{
+int32_t wmpn_sqrtrem(uint64_t * sp, uint64_t * rp, uint64_t * np, int32_t n) {
   uint64_t high, s, nh, ncc, cc;
   uint64_t c;
   int32_t res, adj;
@@ -180,24 +195,23 @@ int32_t wmpn_sqrtrem(uint64_t * sp, uint64_t * rp, uint64_t * np, int32_t n)
   uint64_t * tp;
   uint64_t * o;
   uint64_t * tpa;
-  int32_t i;
-  uint64_t * xp;
-  uint64_t * rp1;
+  uint64_t * nr;
+  uint64_t * nx;
+  struct __open_shift_sep_result struct_res;
+  uint64_t res1, o1;
   uint64_t rl;
-  uint64_t o1, s00, rc;
   uint64_t * s0;
+  uint64_t s00, rc, o2;
   uint64_t cc1;
-  uint64_t o2, o3;
   uint64_t * tp1;
+  uint64_t o3;
   uint64_t c2;
   uint64_t * tp11;
-  int32_t i1;
-  uint64_t * xp1;
-  uint64_t * rp2;
-  int32_t i2;
-  uint64_t * xp2;
-  uint64_t * rp3;
-  uint64_t h;
+  uint64_t * o4;
+  uint64_t * nr1;
+  uint64_t * nx1;
+  struct __open_shift_sep_result struct_res1;
+  uint64_t res2, h;
   high = np[n - 1];
   c = (uint64_t)__builtin_clzll(high) / UINT64_C(2);
   if (n == 1) {
@@ -228,17 +242,14 @@ int32_t wmpn_sqrtrem(uint64_t * sp, uint64_t * rp, uint64_t * np, int32_t n)
     *tp = UINT64_C(0);
     tpa = tp + adj;
     if (!(c == UINT64_C(0))) {
-      wmpn_lshift(tpa, np, n, UINT64_C(2) * c);
+      struct_res = open_shift_sep(tpa, np, n);
+      nr = struct_res.__field_0;
+      nx = struct_res.__field_1;
+      res1 = wmpn_lshift(nr, nx, n, UINT64_C(2) * c);
+      IGNORE2(tpa,np);
+      res1;
     } else {
-      i = 0;
-      xp = np + 0;
-      rp1 = tpa + 0;
-      while (i < n) {
-        *rp1 = *xp;
-        rp1 = rp1 + 1;
-        xp = xp + 1;
-        i = i + 1;
-      }
+      wmpn_copyi1(tpa, np, n);
     }
     IGNORE2(tp, tpa);
     c = c + (!(adj == 0) ? UINT64_C(32) : UINT64_C(0));
@@ -257,7 +268,7 @@ int32_t wmpn_sqrtrem(uint64_t * sp, uint64_t * rp, uint64_t * np, int32_t n)
       cc1 = o3;
     }
     rl = rl - cc1;
-    wmpn_rshift_in_place(sp, tn, c);
+    wmpn_rshift(sp, sp, tn, c);
     tp[tn] = rl;
     c2 = c << UINT64_C(1);
     if (c2 < UINT64_C(64)) {
@@ -268,29 +279,19 @@ int32_t wmpn_sqrtrem(uint64_t * sp, uint64_t * rp, uint64_t * np, int32_t n)
       tp = tp11;
     }
     if (!(c2 == UINT64_C(0))) {
-      wmpn_rshift(rp, tp, tn, c2);
+      o4 = tp;
+      struct_res1 = open_shift_sep(rp, o4, tn);
+      nr1 = struct_res1.__field_0;
+      nx1 = struct_res1.__field_1;
+      res2 = wmpn_rshift(nr1, nx1, tn, c2);
+      IGNORE2(rp,o4);
+      res2;
     } else {
-      i1 = 0;
-      xp1 = tp + 0;
-      rp2 = rp + 0;
-      while (i1 < tn) {
-        *rp2 = *xp1;
-        rp2 = rp2 + 1;
-        xp1 = xp1 + 1;
-        i1 = i1 + 1;
-      }
+      wmpn_copyi1(rp, tp, tn);
     }
     rn = tn;
   } else {
-    i2 = 0;
-    xp2 = np + 0;
-    rp3 = rp + 0;
-    while (i2 < n) {
-      *rp3 = *xp2;
-      rp3 = rp3 + 1;
-      xp2 = xp2 + 1;
-      i2 = i2 + 1;
-    }
+    wmpn_copyi1(rp, np, n);
     h = wmpn_dc_sqrtrem(sp, rp, tn, scratch);
     rp[tn] = h;
     rn = tn + (int32_t)h;

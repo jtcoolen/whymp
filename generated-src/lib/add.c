@@ -3,59 +3,25 @@
 #include <stdio.h>
 #include <assert.h>
 #include <alloca.h>
+#include "c.h"
+
 #include "int.h"
 
 #include "int32.h"
 
 #include "uint64gmp.h"
 
-#include "power.h"
-
-#include "c.h"
+#include "types.h"
 
 #include "array.h"
 
 #include "map.h"
 
-#include "types.h"
+#include "power.h"
 
-#include "euclideandivision.h"
+#include "alias.h"
 
-uint64_t wmpn_add_1(uint64_t * r, uint64_t * x, int32_t sz, uint64_t y)
-{
-  uint64_t lx;
-  uint64_t res;
-  int32_t i;
-  uint64_t c;
-  uint64_t res1;
-  lx = *x;
-  res = lx + y;
-  i = 1;
-  c = UINT64_C(0);
-  *r = res;
-  if (res < lx) {
-    c = UINT64_C(1);
-    while (i < sz) {
-      lx = x[i];
-      res1 = lx + UINT64_C(1);
-      r[i] = res1;
-      i = i + 1;
-      if (!(res1 == UINT64_C(0))) {
-        c = UINT64_C(0);
-        break;
-      }
-    }
-  }
-  while (i < sz) {
-    lx = x[i];
-    r[i] = lx;
-    i = i + 1;
-  }
-  return c;
-}
-
-uint64_t wmpn_add_n(uint64_t * r, uint64_t * x, uint64_t * y, int32_t sz)
-{
+uint64_t wmpn_add_n(uint64_t * r, uint64_t * x, uint64_t * y, int32_t sz) {
   uint64_t lx, ly, c;
   int32_t i;
   uint64_t res, carry;
@@ -78,33 +44,21 @@ uint64_t wmpn_add_n(uint64_t * r, uint64_t * x, uint64_t * y, int32_t sz)
 }
 
 uint64_t wmpn_add(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
-                  int32_t sy)
-{
-  uint64_t lx, ly, c;
+                  int32_t sy) {
+  uint64_t lx, c;
+  uint64_t o, res;
   int32_t i;
-  uint64_t res, carry, res1;
-  struct __add64_with_carry_result struct_res;
   lx = UINT64_C(0);
-  ly = UINT64_C(0);
-  c = UINT64_C(0);
-  i = 0;
-  while (i < sy) {
-    lx = x[i];
-    ly = y[i];
-    struct_res = add64_with_carry(lx, ly, c);
-    res = struct_res.__field_0;
-    carry = struct_res.__field_1;
-    r[i] = res;
-    c = carry;
-    i = i + 1;
-  }
+  o = wmpn_add_n(r, x, y, sy);
+  c = o;
+  i = sy;
   if (!(c == UINT64_C(0))) {
     while (i < sx) {
       lx = x[i];
-      res1 = lx + UINT64_C(1);
-      r[i] = res1;
+      res = lx + UINT64_C(1);
+      r[i] = res;
       i = i + 1;
-      if (!(res1 == UINT64_C(0))) {
+      if (!(res == UINT64_C(0))) {
         c = UINT64_C(0);
         break;
       }
@@ -118,108 +72,82 @@ uint64_t wmpn_add(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
   return c;
 }
 
-uint64_t wmpn_add_in_place(uint64_t * x, int32_t sx, uint64_t * y, int32_t sy)
-{
-  uint64_t lx, ly, c;
-  int32_t i;
-  uint64_t res, carry, res1;
-  struct __add64_with_carry_result struct_res;
-  lx = UINT64_C(0);
-  ly = UINT64_C(0);
-  c = UINT64_C(0);
-  i = 0;
-  while (i < sy) {
-    lx = x[i];
-    ly = y[i];
-    struct_res = add64_with_carry(lx, ly, c);
-    res = struct_res.__field_0;
-    carry = struct_res.__field_1;
-    x[i] = res;
-    c = carry;
-    i = i + 1;
-  }
-  if (!(c == UINT64_C(0))) {
-    while (i < sx) {
-      lx = x[i];
-      res1 = lx + UINT64_C(1);
-      x[i] = res1;
-      i = i + 1;
-      if (!(res1 == UINT64_C(0))) {
-        c = UINT64_C(0);
-        break;
-      }
-    }
-  }
-  return c;
-}
-
-void wmpn_incr(uint64_t * x, uint64_t y)
-{
-  uint64_t c, lx;
-  uint64_t * xp;
-  uint64_t res, res1;
-  c = UINT64_C(0);
-  lx = *x;
-  xp = x + 1;
-  res = lx + y;
-  *x = res;
-  if (res < lx) {
-    c = UINT64_C(1);
-    while (!(c == UINT64_C(0))) {
-      lx = *xp;
-      res1 = lx + UINT64_C(1);
-      *xp = res1;
-      xp = xp + 1;
-      if (!(res1 == UINT64_C(0))) {
-        c = UINT64_C(0);
-        break;
-      }
-    }
-  } else {
-    return;
-  }
-}
-
-void wmpn_incr_1(uint64_t * x)
-{
-  uint64_t r, lx;
-  uint64_t * xp;
+uint64_t add_n(uint64_t * r, uint64_t * x, uint64_t * y, int32_t sz) {
+  uint64_t * nr;
+  uint64_t * nx;
+  uint64_t * ny;
+  struct __open_sep_result struct_res;
   uint64_t res;
-  r = UINT64_C(0);
-  lx = UINT64_C(0);
-  xp = x + 0;
-  while (r == UINT64_C(0)) {
-    lx = *xp;
-    res = lx + UINT64_C(1);
-    r = res;
-    *xp = res;
-    xp = xp + 1;
-  }
+  struct_res = open_sep(r, x, sz, y, sz);
+  nr = struct_res.__field_0;
+  nx = struct_res.__field_1;
+  ny = struct_res.__field_2;
+  res = wmpn_add_n(nr, nx, ny, sz);
+  IGNORE3(r,x,y);
+  return res;
 }
 
-uint64_t wmpn_add_1_in_place(uint64_t * x, int32_t sz, uint64_t y)
-{
-  uint64_t c, lx;
-  int32_t i;
-  uint64_t res, res1;
-  c = UINT64_C(0);
-  lx = *x;
-  i = 1;
-  res = lx + y;
-  *x = res;
-  if (res < lx) {
-    c = UINT64_C(1);
-    while (i < sz) {
-      lx = x[i];
-      res1 = lx + UINT64_C(1);
-      x[i] = res1;
-      i = i + 1;
-      if (!(res1 == UINT64_C(0))) {
-        c = UINT64_C(0);
-        break;
-      }
-    }
-  }
-  return c;
+uint64_t add_n_rx(uint64_t * x, uint64_t * y, int32_t sz) {
+  uint64_t * nr;
+  uint64_t * nx;
+  uint64_t * ny;
+  struct __open_rx_result struct_res;
+  uint64_t res;
+  struct_res = open_rx(x, sz, y, sz);
+  nr = struct_res.__field_0;
+  nx = struct_res.__field_1;
+  ny = struct_res.__field_2;
+  res = wmpn_add_n(nr, nx, ny, sz);
+  IGNORE3(x,sz,sz);
+  return res;
+}
+
+uint64_t add(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y, int32_t sy) {
+  uint64_t * nr;
+  uint64_t * nx;
+  uint64_t * ny;
+  struct __open_sep_result struct_res;
+  uint64_t res;
+  struct_res = open_sep(r, x, sx, y, sy);
+  nr = struct_res.__field_0;
+  nx = struct_res.__field_1;
+  ny = struct_res.__field_2;
+  res = wmpn_add(nr, nx, sx, ny, sy);
+  IGNORE3(r,x,y);
+  return res;
+}
+
+uint64_t add_rx(uint64_t * x, int32_t sx, uint64_t * y, int32_t sy) {
+  uint64_t * nr;
+  uint64_t * nx;
+  uint64_t * ny;
+  struct __open_rx_result struct_res;
+  uint64_t res;
+  struct_res = open_rx(x, sx, y, sy);
+  nr = struct_res.__field_0;
+  nx = struct_res.__field_1;
+  ny = struct_res.__field_2;
+  res = wmpn_add(nr, nx, sx, ny, sy);
+  IGNORE3(x,sx,sy);
+  return res;
+}
+
+uint64_t add_ry(uint64_t * x, int32_t sx, uint64_t * y, int32_t sy) {
+  uint64_t * nr;
+  uint64_t * ny;
+  uint64_t * nx;
+  struct __open_rx_result struct_res;
+  uint64_t res;
+  struct_res = open_rx(y, sx, x, sx);
+  nr = struct_res.__field_0;
+  ny = struct_res.__field_1;
+  nx = struct_res.__field_2;
+  res = wmpn_add(nr, nx, sx, ny, sy);
+  IGNORE3(y,sx,sx);
+  return res;
+}
+
+uint64_t add_n_rxy(uint64_t * x, int32_t sx) {
+  return wmpn_add_n(x, x, x, sx);
 }
 

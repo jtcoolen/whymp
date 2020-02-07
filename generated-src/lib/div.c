@@ -21,20 +21,24 @@
 
 #include "compare.h"
 
-#include "util.h"
+#include "utilold.h"
 
-#include "add.h"
+#include "addold.h"
 
-#include "sub.h"
+#include "subold.h"
 
-#include "logical.h"
+#include "logicalutil.h"
+
+#include "logicalold.h"
 
 #include "euclideandivision.h"
 
 #include "minmax.h"
 
-uint64_t invert_limb(uint64_t d)
-{ return div64_2by1((0xffffffffffffffffUL), (0xffffffffffffffffUL) - d, d);
+#include "mul.h"
+
+uint64_t invert_limb(uint64_t d) {
+  return div64_2by1((0xffffffffffffffffUL), (0xffffffffffffffffUL) - d, d);
 }
 
 struct __div2by1_inv_result
@@ -43,8 +47,7 @@ struct __div2by1_inv_result
 };
 
 struct __div2by1_inv_result div2by1_inv(uint64_t uh, uint64_t ul, uint64_t d,
-                                        uint64_t v)
-{
+                                        uint64_t v) {
   uint64_t l, h, sl, c;
   struct __mul64_double_result struct_res;
   struct __add64_with_carry_result struct_res1, struct_res2;
@@ -77,8 +80,7 @@ struct __div2by1_inv_result div2by1_inv(uint64_t uh, uint64_t ul, uint64_t d,
   return result;
 }
 
-uint64_t wmpn_divrem_1(uint64_t * q, uint64_t * x, int32_t sz, uint64_t y)
-{
+uint64_t wmpn_divrem_1(uint64_t * q, uint64_t * x, int32_t sz, uint64_t y) {
   int32_t msb;
   uint64_t lx, r;
   int32_t i;
@@ -131,8 +133,7 @@ struct __div3by2_inv_result
 
 struct __div3by2_inv_result div3by2_inv(uint64_t uh, uint64_t um,
                                         uint64_t ul, uint64_t dh,
-                                        uint64_t dl, uint64_t v)
-{
+                                        uint64_t dl, uint64_t v) {
   uint64_t q1, r0, r1;
   uint64_t l, h, sl, c;
   struct __mul64_double_result struct_res;
@@ -202,8 +203,7 @@ struct __div3by2_inv_result div3by2_inv(uint64_t uh, uint64_t um,
   return result;
 }
 
-uint64_t reciprocal_word_3by2(uint64_t dh, uint64_t dl)
-{
+uint64_t reciprocal_word_3by2(uint64_t dh, uint64_t dl) {
   uint64_t v, p;
   uint64_t tl, th;
   struct __mul64_double_result struct_res;
@@ -231,57 +231,8 @@ uint64_t reciprocal_word_3by2(uint64_t dh, uint64_t dl)
   return v;
 }
 
-struct __sub3_result
-{ uint64_t __field_0;
-  uint64_t __field_1;
-};
-
-struct __sub3_result sub3(uint64_t x, uint64_t y, uint64_t z)
-{
-  uint64_t u1, b1, u2, b2;
-  struct __sub64_with_borrow_result struct_res, struct_res1;
-  struct __sub3_result result;
-  struct_res = sub64_with_borrow(x, y, UINT64_C(0));
-  u1 = struct_res.__field_0;
-  b1 = struct_res.__field_1;
-  struct_res1 = sub64_with_borrow(u1, z, UINT64_C(0));
-  u2 = struct_res1.__field_0;
-  b2 = struct_res1.__field_1;
-  result.__field_0 = u2;
-  result.__field_1 = b1 + b2;
-  return result;
-}
-
-uint64_t wmpn_submul_1(uint64_t * r, uint64_t * x, int32_t sz, uint64_t y)
-{
-  uint64_t lx, lr, b;
-  int32_t i;
-  uint64_t rl, rh, res, borrow;
-  struct __mul64_double_result struct_res;
-  struct __sub3_result struct_res1;
-  lx = UINT64_C(0);
-  lr = UINT64_C(0);
-  b = UINT64_C(0);
-  i = 0;
-  while (i < sz) {
-    lx = x[i];
-    lr = r[i];
-    struct_res = mul64_double(lx, y);
-    rl = struct_res.__field_0;
-    rh = struct_res.__field_1;
-    struct_res1 = sub3(lr, rl, b);
-    res = struct_res1.__field_0;
-    borrow = struct_res1.__field_1;
-    r[i] = res;
-    b = rh + borrow;
-    i = i + 1;
-  }
-  return b;
-}
-
 uint64_t div_sb_qr(uint64_t * q, uint64_t * x, int32_t sx, uint64_t * y,
-                   int32_t sy)
-{
+                   int32_t sy) {
   uint64_t * xp;
   uint64_t * qp;
   uint64_t dh, dl, v;
@@ -312,23 +263,23 @@ uint64_t div_sb_qr(uint64_t * q, uint64_t * x, int32_t sx, uint64_t * y,
     qh = UINT64_C(0);
   }
   if (!(qh == UINT64_C(0))) {
-    wmpn_sub_in_place(xd, sy, y, sy);
+    wmpn_sub_n_in_place(xd, y, sy);
   }
-  x1 = xp[1];
+  x1 = (xp)[1];
   while (i > 0) {
     i = i - 1;
     xp = xp + -1;
     xd1 = xp + mdn;
-    nx0 = xp[1];
+    nx0 = (xp)[1];
     if (__builtin_expect(x1 == dh && nx0 == dl,0)) {
       ql = (0xffffffffffffffffUL);
       wmpn_submul_1(xd1, y, sy, ql);
-      x1 = xp[1];
+      x1 = (xp)[1];
       qp = qp + -1;
       *qp = ql;
     } else {
       xp0 = *xp;
-      xp1 = xp[1];
+      xp1 = (xp)[1];
       struct_res = div3by2_inv(x1, xp1, xp0, dh, dl, v);
       qu = struct_res.__field_0;
       rl = struct_res.__field_1;
@@ -351,7 +302,7 @@ uint64_t div_sb_qr(uint64_t * q, uint64_t * x, int32_t sx, uint64_t * y,
       x1 = x1 - cy1;
       *xp = x0;
       if (__builtin_expect(!(cy2 == UINT64_C(0)),0)) {
-        c = wmpn_add_in_place(xd1, sy - 1, y, sy - 1);
+        c = wmpn_add_n_in_place(xd1, y, sy - 1);
         x1 = x1 + (dh + c);
         ql = ql - UINT64_C(1);
         qp = qp + -1;
@@ -366,8 +317,7 @@ uint64_t div_sb_qr(uint64_t * q, uint64_t * x, int32_t sx, uint64_t * y,
   return qh;
 }
 
-uint64_t wmpn_divrem_2(uint64_t * q, uint64_t * x, uint64_t * y, int32_t sx)
-{
+uint64_t wmpn_divrem_2(uint64_t * q, uint64_t * x, uint64_t * y, int32_t sx) {
   uint64_t * xp;
   uint64_t dh, dl;
   uint64_t rh, rl, qh, lx;
@@ -378,7 +328,7 @@ uint64_t wmpn_divrem_2(uint64_t * q, uint64_t * x, uint64_t * y, int32_t sx)
   xp = x + (sx - 2);
   dh = y[1];
   dl = *y;
-  rh = xp[1];
+  rh = (xp)[1];
   rl = *xp;
   qh = UINT64_C(0);
   lx = UINT64_C(0);
@@ -412,25 +362,9 @@ uint64_t wmpn_divrem_2(uint64_t * q, uint64_t * x, uint64_t * y, int32_t sx)
 }
 
 void div_qr(uint64_t * q, uint64_t * r, uint64_t * x, uint64_t * y,
-            uint64_t * nx, uint64_t * ny, int32_t sx, int32_t sy)
-{
-  uint64_t lr;
-  int32_t clz;
-  int32_t i;
-  uint64_t * xp;
-  uint64_t * rp;
-  int32_t i1;
-  uint64_t * xp1;
-  uint64_t * rp1;
-  uint64_t h;
-  int32_t adjust, clz1;
-  int32_t i2;
-  uint64_t * xp2;
-  uint64_t * rp2;
-  int32_t i3;
-  uint64_t * xp3;
-  uint64_t * rp3;
-  uint64_t h1;
+            uint64_t * nx, uint64_t * ny, int32_t sx, int32_t sy) {
+  uint64_t lr, h, h1;
+  int32_t clz, adjust, clz1;
   if (sy == 1) {
     lr = wmpn_divrem_1(q, x, sx, *y);
     *r = lr;
@@ -439,32 +373,17 @@ void div_qr(uint64_t * q, uint64_t * r, uint64_t * x, uint64_t * y,
     if (sy == 2) {
       clz = __builtin_clzll(y[sy - 1]);
       if (clz == 0) {
-        i = 0;
-        xp = x + 0;
-        rp = nx + 0;
-        while (i < sx) {
-          *rp = *xp;
-          rp = rp + 1;
-          xp = xp + 1;
-          i = i + 1;
-        }
+        wmpn_copyi1(nx, x, sx);
         nx[sx] = UINT64_C(0);
         wmpn_divrem_2(q, nx, y, sx + 1);
-        i1 = 0;
-        xp1 = nx + 0;
-        rp1 = r + 0;
-        while (i1 < sy) {
-          *rp1 = *xp1;
-          rp1 = rp1 + 1;
-          xp1 = xp1 + 1;
-          i1 = i1 + 1;
-        }
+        wmpn_copyi1(r, nx, sy);
+        return;
       } else {
-        wmpn_lshift(ny, y, sy, (uint64_t)clz);
-        h = wmpn_lshift(nx, x, sx, (uint64_t)clz);
+        wmpn_lshift1(ny, y, sy, (uint64_t)clz);
+        h = wmpn_lshift1(nx, x, sx, (uint64_t)clz);
         nx[sx] = h;
         wmpn_divrem_2(q, nx, ny, sx + 1);
-        wmpn_rshift(r, nx, sy, (uint64_t)clz);
+        wmpn_rshift1(r, nx, sy, (uint64_t)clz);
         return;
       }
     } else {
@@ -475,26 +394,10 @@ void div_qr(uint64_t * q, uint64_t * r, uint64_t * x, uint64_t * y,
       }
       clz1 = __builtin_clzll(y[sy - 1]);
       if (clz1 == 0) {
-        i2 = 0;
-        xp2 = x + 0;
-        rp2 = nx + 0;
-        while (i2 < sx) {
-          *rp2 = *xp2;
-          rp2 = rp2 + 1;
-          xp2 = xp2 + 1;
-          i2 = i2 + 1;
-        }
+        wmpn_copyi1(nx, x, sx);
         nx[sx] = UINT64_C(0);
         div_sb_qr(q, nx, sx + adjust, y, sy);
-        i3 = 0;
-        xp3 = nx + 0;
-        rp3 = r + 0;
-        while (i3 < sy) {
-          *rp3 = *xp3;
-          rp3 = rp3 + 1;
-          xp3 = xp3 + 1;
-          i3 = i3 + 1;
-        }
+        wmpn_copyi1(r, nx, sy);
         if (adjust == 0) {
           q[sx - sy] = UINT64_C(0);
           return;
@@ -502,11 +405,11 @@ void div_qr(uint64_t * q, uint64_t * r, uint64_t * x, uint64_t * y,
           return;
         }
       } else {
-        wmpn_lshift(ny, y, sy, (uint64_t)clz1);
-        h1 = wmpn_lshift(nx, x, sx, (uint64_t)clz1);
+        wmpn_lshift1(ny, y, sy, (uint64_t)clz1);
+        h1 = wmpn_lshift1(nx, x, sx, (uint64_t)clz1);
         nx[sx] = h1;
         div_sb_qr(q, nx, sx + adjust, ny, sy);
-        wmpn_rshift(r, nx, sy, (uint64_t)clz1);
+        wmpn_rshift1(r, nx, sy, (uint64_t)clz1);
         if (adjust == 0) {
           q[sx - sy] = UINT64_C(0);
           return;
@@ -518,9 +421,8 @@ void div_qr(uint64_t * q, uint64_t * r, uint64_t * x, uint64_t * y,
   }
 }
 
-void wmpn_tdiv_qr(uint64_t * q, uint64_t * r, uint64_t * x, int32_t sx,
-                  uint64_t * y, int32_t sy)
-{
+void wmpn_tdiv_qr(uint64_t * q, uint64_t * r, int32_t qxn, uint64_t * x,
+                  int32_t sx, uint64_t * y, int32_t sy) {
   uint64_t * nx;
   uint64_t * ny;
   nx = malloc(((uint32_t)sx + 1U) * sizeof(uint64_t));
@@ -534,25 +436,9 @@ void wmpn_tdiv_qr(uint64_t * q, uint64_t * r, uint64_t * x, int32_t sx,
 }
 
 void div_qr_in_place(uint64_t * q, uint64_t * x, uint64_t * y, uint64_t * nx,
-                     uint64_t * ny, int32_t sx, int32_t sy)
-{
-  uint64_t lr;
-  int32_t clz;
-  int32_t i;
-  uint64_t * xp;
-  uint64_t * rp;
-  int32_t i1;
-  uint64_t * xp1;
-  uint64_t * rp1;
-  uint64_t h;
-  int32_t adjust, clz1;
-  int32_t i2;
-  uint64_t * xp2;
-  uint64_t * rp2;
-  int32_t i3;
-  uint64_t * xp3;
-  uint64_t * rp3;
-  uint64_t h1;
+                     uint64_t * ny, int32_t sx, int32_t sy) {
+  uint64_t lr, h, h1;
+  int32_t clz, adjust, clz1;
   if (sy == 1) {
     lr = wmpn_divrem_1(q, x, sx, *y);
     *x = lr;
@@ -561,32 +447,17 @@ void div_qr_in_place(uint64_t * q, uint64_t * x, uint64_t * y, uint64_t * nx,
     if (sy == 2) {
       clz = __builtin_clzll(y[sy - 1]);
       if (clz == 0) {
-        i = 0;
-        xp = x + 0;
-        rp = nx + 0;
-        while (i < sx) {
-          *rp = *xp;
-          rp = rp + 1;
-          xp = xp + 1;
-          i = i + 1;
-        }
+        wmpn_copyi1(nx, x, sx);
         nx[sx] = UINT64_C(0);
         wmpn_divrem_2(q, nx, y, sx + 1);
-        i1 = 0;
-        xp1 = nx + 0;
-        rp1 = x + 0;
-        while (i1 < sy) {
-          *rp1 = *xp1;
-          rp1 = rp1 + 1;
-          xp1 = xp1 + 1;
-          i1 = i1 + 1;
-        }
+        wmpn_copyi1(x, nx, sy);
+        return;
       } else {
-        wmpn_lshift(ny, y, sy, (uint64_t)clz);
-        h = wmpn_lshift(nx, x, sx, (uint64_t)clz);
+        wmpn_lshift1(ny, y, sy, (uint64_t)clz);
+        h = wmpn_lshift1(nx, x, sx, (uint64_t)clz);
         nx[sx] = h;
         wmpn_divrem_2(q, nx, ny, sx + 1);
-        wmpn_rshift(x, nx, sy, (uint64_t)clz);
+        wmpn_rshift1(x, nx, sy, (uint64_t)clz);
         return;
       }
     } else {
@@ -597,26 +468,10 @@ void div_qr_in_place(uint64_t * q, uint64_t * x, uint64_t * y, uint64_t * nx,
       }
       clz1 = __builtin_clzll(y[sy - 1]);
       if (clz1 == 0) {
-        i2 = 0;
-        xp2 = x + 0;
-        rp2 = nx + 0;
-        while (i2 < sx) {
-          *rp2 = *xp2;
-          rp2 = rp2 + 1;
-          xp2 = xp2 + 1;
-          i2 = i2 + 1;
-        }
+        wmpn_copyi1(nx, x, sx);
         nx[sx] = UINT64_C(0);
         div_sb_qr(q, nx, sx + adjust, y, sy);
-        i3 = 0;
-        xp3 = nx + 0;
-        rp3 = x + 0;
-        while (i3 < sy) {
-          *rp3 = *xp3;
-          rp3 = rp3 + 1;
-          xp3 = xp3 + 1;
-          i3 = i3 + 1;
-        }
+        wmpn_copyi1(x, nx, sy);
         if (adjust == 0) {
           q[sx - sy] = UINT64_C(0);
           return;
@@ -624,11 +479,11 @@ void div_qr_in_place(uint64_t * q, uint64_t * x, uint64_t * y, uint64_t * nx,
           return;
         }
       } else {
-        wmpn_lshift(ny, y, sy, (uint64_t)clz1);
-        h1 = wmpn_lshift(nx, x, sx, (uint64_t)clz1);
+        wmpn_lshift1(ny, y, sy, (uint64_t)clz1);
+        h1 = wmpn_lshift1(nx, x, sx, (uint64_t)clz1);
         nx[sx] = h1;
         div_sb_qr(q, nx, sx + adjust, ny, sy);
-        wmpn_rshift(x, nx, sy, (uint64_t)clz1);
+        wmpn_rshift1(x, nx, sy, (uint64_t)clz1);
         if (adjust == 0) {
           q[sx - sy] = UINT64_C(0);
           return;
@@ -640,9 +495,8 @@ void div_qr_in_place(uint64_t * q, uint64_t * x, uint64_t * y, uint64_t * nx,
   }
 }
 
-void wmpn_tdiv_qr_in_place(uint64_t * q, uint64_t * x, int32_t sx,
-                           uint64_t * y, int32_t sy)
-{
+void wmpn_tdiv_qr_in_place(uint64_t * q, int32_t qxn, uint64_t * x,
+                           int32_t sx, uint64_t * y, int32_t sy) {
   uint64_t * nx;
   uint64_t * ny;
   nx = malloc(((uint32_t)sx + 1U) * sizeof(uint64_t));

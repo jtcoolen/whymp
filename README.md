@@ -13,7 +13,7 @@ To regenerate the C sources of the library using Why3, go into the `why3` submod
     ./autogen.sh
     ./configure --enable-local && make
     cd examples/multiprecision
-    PATH=../../bin:$PATH make dist
+    make LOCAL=yes dist
 
 This produces a `.tar.gz` file containing a standalone C library.
 

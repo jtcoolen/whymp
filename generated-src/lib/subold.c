@@ -1,0 +1,119 @@
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <assert.h>
+#include <alloca.h>
+#include "c.h"
+
+#include "int.h"
+
+#include "int32.h"
+
+#include "uint64gmp.h"
+
+#include "types.h"
+
+#include "array.h"
+
+#include "map.h"
+
+#include "power.h"
+
+#include "alias.h"
+
+uint64_t wmpn_sub_n1(uint64_t * r, uint64_t * x, uint64_t * y, int32_t sz) {
+  uint64_t lx, ly, b;
+  int32_t i;
+  uint64_t res, borrow;
+  struct __sub64_with_borrow_result struct_res;
+  lx = UINT64_C(0);
+  ly = UINT64_C(0);
+  b = UINT64_C(0);
+  i = 0;
+  while (i < sz) {
+    lx = x[i];
+    ly = y[i];
+    struct_res = sub64_with_borrow(lx, ly, b);
+    res = struct_res.__field_0;
+    borrow = struct_res.__field_1;
+    r[i] = res;
+    b = borrow;
+    i = i + 1;
+  }
+  return b;
+}
+
+uint64_t wmpn_sub1(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
+                   int32_t sy) {
+  uint64_t lx, b;
+  uint64_t o, res;
+  int32_t i;
+  lx = UINT64_C(0);
+  o = wmpn_sub_n1(r, x, y, sy);
+  b = o;
+  i = sy;
+  if (!(b == UINT64_C(0))) {
+    while (i < sx) {
+      lx = x[i];
+      res = lx - UINT64_C(1);
+      r[i] = res;
+      i = i + 1;
+      if (!(lx == UINT64_C(0))) {
+        b = UINT64_C(0);
+        break;
+      }
+    }
+  }
+  while (i < sx) {
+    lx = x[i];
+    r[i] = lx;
+    i = i + 1;
+  }
+  return b;
+}
+
+uint64_t wmpn_sub_n_in_place(uint64_t * x, uint64_t * y, int32_t sz) {
+  uint64_t lx, ly, b;
+  int32_t i;
+  uint64_t res, borrow;
+  struct __sub64_with_borrow_result struct_res;
+  lx = UINT64_C(0);
+  ly = UINT64_C(0);
+  b = UINT64_C(0);
+  i = 0;
+  while (i < sz) {
+    lx = x[i];
+    ly = y[i];
+    struct_res = sub64_with_borrow(lx, ly, b);
+    res = struct_res.__field_0;
+    borrow = struct_res.__field_1;
+    x[i] = res;
+    b = borrow;
+    i = i + 1;
+  }
+  return b;
+}
+
+uint64_t wmpn_sub_in_place(uint64_t * x, int32_t sx, uint64_t * y, int32_t sy) {
+  uint64_t lx, b;
+  uint64_t o, res;
+  int32_t i;
+  lx = UINT64_C(0);
+  o = wmpn_sub_n_in_place(x, y, sy);
+  b = o;
+  i = sy;
+  if (!(b == UINT64_C(0))) {
+    while (i < sx) {
+      lx = x[i];
+      res = lx - UINT64_C(1);
+      x[i] = res;
+      i = i + 1;
+      if (!(lx == UINT64_C(0))) {
+        b = UINT64_C(0);
+        break;
+      }
+    }
+  }
+  return b;
+}
+

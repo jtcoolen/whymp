@@ -9,6 +9,8 @@
 
 #include "realinfix.h"
 
+#include "square.h"
+
 #include "uint64.h"
 
 #include "power.h"
@@ -23,14 +25,13 @@
 #include "sqrtinit.h"
 
 uint64_t rsa_estimate (uint64_t a) {
-  uint64_t abits, x0;
-  abits = a >> 55;
-  x0 = 0x100 | invsqrttab[abits - 0x80];
-  return x0;
+uint64_t abits, x0;
+abits = a >> 55;
+x0 = 0x100 | invsqrttab[abits - 0x80];
+return x0;
 }
 
-uint64_t sqrt1(uint64_t * rp, uint64_t a0)
-{
+uint64_t sqrt1(uint64_t * rp, uint64_t a0) {
   uint64_t a, x0, a1, m1, t1qt, t1, x1, a2, u1, u2, m2, t2qt, t2, x2, x;
   uint64_t c, s;
   a = a0;
