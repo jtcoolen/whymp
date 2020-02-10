@@ -25,4 +25,4 @@ libwmp_a_SOURCES = \
   lib/zmul2exp.c lib/zmul2exp.h lib/zdiv2exp.c lib/zdiv2exp.h
 
 
-include_HEADERS = wmp.h
+include_HEADERS = wmp.h wmp-gmp.h

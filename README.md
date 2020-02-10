@@ -20,6 +20,8 @@ To compile and install the library, use the following commands:
 
 The library is meant to be used in place of GMP. To do so, replace `#include <gmp.h>` by `#include <wmp.h>` in C source files, and replace `-lgmp` by `-lwmp` during linking. All functions and types are prefixed by `w` to avoid conflicts, e.g., `mpz_add` is called `wmpz_add`.
 
+When unsupported functions are needed, one can instead use `#include <wmp-gmp.h>`. In that case, functions and types no longer need to be prefixed by `w`, as they also have their standard GMP names. All GMP functions are available, but the ones from WhyMP take precedence. Linking is then done using `-lwmp -lgmp`.
+
 ## Generating the sources
 
 To regenerate the C sources of the library using Why3, go into the `why3` submodule, and then use the following commands:
