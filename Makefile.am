@@ -1,4 +1,4 @@
-AUTOMAKE_OPTIONS = subdir-objects
+AUTOMAKE_OPTIONS = foreign subdir-objects
 
 lib_LIBRARIES = libwmp.a
 
