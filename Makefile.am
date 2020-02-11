@@ -1,5 +1,7 @@
 AUTOMAKE_OPTIONS = foreign subdir-objects
 
+EXTRA_DIST = COPYING.md COPYING.GPLv3.md NEWS.md README.md
+
 lib_LIBRARIES = libwmp.a
 
 libwmp_a_SOURCES = \
