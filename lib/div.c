@@ -1,50 +1,11 @@
-#include <stdlib.h>
+#include "div.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "int.h"
-
-#include "int32.h"
-
-#include "uint64gmp.h"
-
-#include "power.h"
-
-#include "c.h"
-
-#include "array.h"
-
-#include "map.h"
-
-#include "types.h"
-
-#include "compare.h"
-
-#include "utilold.h"
-
-#include "addold.h"
-
-#include "subold.h"
-
-#include "logicalutil.h"
-
-#include "logicalold.h"
-
-#include "euclideandivision.h"
-
-#include "minmax.h"
-
-#include "mul.h"
 
 uint64_t invert_limb(uint64_t d) {
-  return div64_2by1((0xffffffffffffffffUL), (0xffffffffffffffffUL) - d, d);
+  return div64_2by1(0xffffffffffffffffUL, 0xffffffffffffffffUL - d, d);
 }
+struct __div2by1_inv_result;
 
-struct __div2by1_inv_result
-{ uint64_t __field_0;
-  uint64_t __field_1;
-};
 
 struct __div2by1_inv_result div2by1_inv(uint64_t uh, uint64_t ul, uint64_t d,
                                         uint64_t v) {
@@ -124,12 +85,8 @@ uint64_t wmpn_divrem_1(uint64_t * q, uint64_t * x, int32_t sz, uint64_t y) {
     return r;
   }
 }
+struct __div3by2_inv_result;
 
-struct __div3by2_inv_result
-{ uint64_t __field_0;
-  uint64_t __field_1;
-  uint64_t __field_2;
-};
 
 struct __div3by2_inv_result div3by2_inv(uint64_t uh, uint64_t um,
                                         uint64_t ul, uint64_t dh,
@@ -272,7 +229,7 @@ uint64_t div_sb_qr(uint64_t * q, uint64_t * x, int32_t sx, uint64_t * y,
     xd1 = xp + mdn;
     nx0 = (xp)[1];
     if (__builtin_expect(x1 == dh && nx0 == dl,0)) {
-      ql = (0xffffffffffffffffUL);
+      ql = 0xffffffffffffffffUL;
       wmpn_submul_1(xd1, y, sy, ql);
       x1 = (xp)[1];
       qp = qp + -1;
@@ -508,4 +465,3 @@ void wmpn_tdiv_qr_in_place(uint64_t * q, int32_t qxn, uint64_t * x,
   free(ny);
   return;
 }
-

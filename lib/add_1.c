@@ -1,25 +1,5 @@
-#include <stdlib.h>
+#include "add_1.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "int.h"
-
-#include "int32.h"
-
-#include "uint64gmp.h"
-
-#include "power.h"
-
-#include "c.h"
-
-#include "array.h"
-
-#include "map.h"
-
-#include "types.h"
-
-#include "euclideandivision.h"
 
 uint64_t wmpn_add_1(uint64_t * r, uint64_t * x, int32_t sz, uint64_t y) {
   uint64_t lx;
@@ -119,4 +99,3 @@ uint64_t wmpn_add_1_in_place(uint64_t * x, int32_t sz, uint64_t y) {
   }
   return c;
 }
-

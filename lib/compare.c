@@ -1,21 +1,5 @@
-#include <stdlib.h>
+#include "compare.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "int.h"
-
-#include "int32.h"
-
-#include "uint64gmp.h"
-
-#include "power.h"
-
-#include "c.h"
-
-#include "map.h"
-
-#include "types.h"
 
 int32_t wmpn_cmp(uint64_t * x, uint64_t * y, int32_t sz) {
   int32_t i;
@@ -35,4 +19,3 @@ int32_t wmpn_cmp(uint64_t * x, uint64_t * y, int32_t sz) {
   }
   return 0;
 }
-

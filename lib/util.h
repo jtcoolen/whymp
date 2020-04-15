@@ -1,10 +1,10 @@
 #ifndef UTIL_H_INCLUDED
 
-#include <stdlib.h>
+#include "uint64gmp.h"
+#include "c.h"
+#include "alias.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
+
 int32_t wmpn_zero_p(uint64_t * x, int32_t sz);
 
 void wmpn_zero(uint64_t * r, int32_t sz);

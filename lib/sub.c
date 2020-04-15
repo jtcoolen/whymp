@@ -1,25 +1,5 @@
-#include <stdlib.h>
+#include "sub.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "c.h"
-
-#include "int.h"
-
-#include "int32.h"
-
-#include "uint64gmp.h"
-
-#include "types.h"
-
-#include "array.h"
-
-#include "map.h"
-
-#include "alias.h"
-
-#include "power.h"
 
 uint64_t wmpn_sub_n(uint64_t * r, uint64_t * x, uint64_t * y, int32_t sz) {
   uint64_t lx, ly, b;
@@ -161,4 +141,3 @@ uint64_t sub_ry(uint64_t * x, int32_t sx, uint64_t * y, int32_t sy) {
   IGNORE3(y,sx,sx);
   return res;
 }
-

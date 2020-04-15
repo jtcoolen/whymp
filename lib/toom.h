@@ -1,11 +1,20 @@
 #ifndef TOOM_H_INCLUDED
 
-#include <stdlib.h>
+#include "c.h"
+#include "uint64gmp.h"
+#include "compare.h"
+#include "util.h"
+#include "utilold.h"
+#include "add_1.h"
+#include "addold.h"
+#include "sub_1.h"
+#include "subold.h"
+#include "mul.h"
+#include "mul_basecase.h"
+#include "logical.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-int32_t toom22_threshold();
+
+int32_t toom22_threshold;
 
 void wmpn_toom22_mul(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
                      int32_t sy, uint64_t * scratch);

@@ -1,50 +1,10 @@
-#include <stdlib.h>
+#include "powm.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "array.h"
-
-#include "map.h"
-
-#include "c.h"
-
-#include "int32.h"
-
-#include "uint32gmp.h"
-
-#include "uint64gmp.h"
-
-#include "int.h"
-
-#include "power.h"
-
-#include "types.h"
-
-#include "compare.h"
-
-#include "util.h"
-
-#include "utilold.h"
-
-#include "addold.h"
-
-#include "subold.h"
-
-#include "mul.h"
-
-#include "logicalutil.h"
-
-#include "div.h"
-
-#include "toom.h"
-
-#include "euclideandivision.h"
 
 #include "binverttab.h"
 
 uint64_t binvert_limb_table (uint64_t n) {
-return (uint64_t)binverttab[n];
+  return (uint64_t)binverttab[n];
 }
 
 void wmpn_redc_1(uint64_t * rp, uint64_t * up, uint64_t * mp, int32_t n,
@@ -139,16 +99,9 @@ static inline void redcify(uint64_t * rp, uint64_t * up, int32_t un,
                            uint64_t * mp, int32_t n) {
   uint64_t * tp;
   uint64_t * qp;
-  int32_t i;
-  uint64_t lzero;
   tp = alloca((uint32_t)(un + n) * sizeof(uint64_t));
   qp = alloca((uint32_t)(un + 1) * sizeof(uint64_t));
-  i = 0;
-  lzero = UINT64_C(0);
-  while (i < n) {
-    tp[i] = lzero;
-    i = i + 1;
-  }
+  wmpn_zero(tp, n);
   wmpn_copyi1(tp + n, up, un);
   wmpn_tdiv_qr(qp, rp, 0, tp, un + n, mp, n);
   return;
@@ -203,9 +156,6 @@ void wmpn_powm(uint64_t * rp, uint64_t * bp, int32_t bn, uint64_t * ep,
   int32_t this_windowsize;
   int32_t ebh1;
   uint64_t * ppn1;
-  uint64_t * o1;
-  int32_t i1;
-  uint64_t lzero;
   le = ep[en - 1];
   cnt = __builtin_clzll(le);
   ebi = 64 * en - cnt;
@@ -272,13 +222,7 @@ void wmpn_powm(uint64_t * rp, uint64_t * bp, int32_t bn, uint64_t * ep,
     wmpn_redc_1(rp, tp, mp, n, mip);
   }
   wmpn_copyi1(tp, rp, n);
-  o1 = tp + n;
-  i1 = 0;
-  lzero = UINT64_C(0);
-  while (i1 < n) {
-    o1[i1] = lzero;
-    i1 = i1 + 1;
-  }
+  wmpn_zero(tp + n, n);
   wmpn_redc_1(rp, tp, mp, n, mip);
   if (wmpn_cmp(rp, mp, n) >= 0) {
     wmpn_sub_n_in_place(rp, mp, n);
@@ -287,4 +231,3 @@ void wmpn_powm(uint64_t * rp, uint64_t * bp, int32_t bn, uint64_t * ep,
     return;
   }
 }
-

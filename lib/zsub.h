@@ -1,10 +1,18 @@
 #ifndef ZSUB_H_INCLUDED
 
-#include <stdlib.h>
+#include "c.h"
+#include "util.h"
+#include "alias.h"
+#include "compare.h"
+#include "uint64gmp.h"
+#include "add.h"
+#include "sub.h"
+#include "z.h"
+#include "zutil.h"
+#include "add_1.h"
+#include "sub_1.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
+
 void wmpz_sub(wmpz_ptr w, wmpz_ptr u, wmpz_ptr v);
 
 void wmpz_sub_ui(wmpz_ptr w, wmpz_ptr u, uint64_t v);

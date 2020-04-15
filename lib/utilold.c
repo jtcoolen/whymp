@@ -1,23 +1,5 @@
-#include <stdlib.h>
+#include "utilold.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "int.h"
-
-#include "int32.h"
-
-#include "uint64gmp.h"
-
-#include "power.h"
-
-#include "c.h"
-
-#include "array.h"
-
-#include "map.h"
-
-#include "types.h"
 
 void wmpn_copyi1(uint64_t * r, uint64_t * x, int32_t sz) {
   int32_t i;
@@ -33,4 +15,3 @@ void wmpn_copyi1(uint64_t * r, uint64_t * x, int32_t sz) {
     i = i + 1;
   }
 }
-

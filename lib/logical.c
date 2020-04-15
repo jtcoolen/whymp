@@ -1,29 +1,5 @@
-#include <stdlib.h>
+#include "logical.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "int.h"
-
-#include "int32.h"
-
-#include "uint64gmp.h"
-
-#include "power.h"
-
-#include "c.h"
-
-#include "array.h"
-
-#include "map.h"
-
-#include "types.h"
-
-#include "euclideandivision.h"
-
-#include "logicalutil.h"
-
-#include "alias.h"
 
 uint64_t wmpn_lshift(uint64_t * r, uint64_t * x, int32_t sz, uint64_t cnt) {
   int32_t msb;
@@ -56,19 +32,6 @@ uint64_t wmpn_lshift(uint64_t * r, uint64_t * x, int32_t sz, uint64_t cnt) {
   }
   *r = high;
   return retval;
-}
-
-uint64_t wmpn_lshift_sep(uint64_t * r, uint64_t * x, int32_t sz, uint64_t cnt) {
-  uint64_t * nr;
-  uint64_t * nx;
-  struct __open_shift_sep_result struct_res;
-  uint64_t res;
-  struct_res = open_shift_sep(r, x, sz);
-  nr = struct_res.__field_0;
-  nx = struct_res.__field_1;
-  res = wmpn_lshift(nr, nx, sz, cnt);
-  IGNORE2(r,x);
-  return res;
 }
 
 uint64_t wmpn_rshift(uint64_t * r, uint64_t * x, int32_t sz, uint64_t cnt) {
@@ -107,17 +70,3 @@ uint64_t wmpn_rshift(uint64_t * r, uint64_t * x, int32_t sz, uint64_t cnt) {
   *rp = low;
   return retval;
 }
-
-uint64_t wmpn_rshift_sep(uint64_t * r, uint64_t * x, int32_t sz, uint64_t cnt) {
-  uint64_t * nr;
-  uint64_t * nx;
-  struct __open_shift_sep_result struct_res;
-  uint64_t res;
-  struct_res = open_shift_sep(r, x, sz);
-  nr = struct_res.__field_0;
-  nx = struct_res.__field_1;
-  res = wmpn_rshift(nr, nx, sz, cnt);
-  IGNORE2(r,x);
-  return res;
-}
-

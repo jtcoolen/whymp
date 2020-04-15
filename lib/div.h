@@ -1,10 +1,16 @@
 #ifndef DIV_H_INCLUDED
 
-#include <stdlib.h>
+#include "uint64gmp.h"
+#include "c.h"
+#include "compare.h"
+#include "utilold.h"
+#include "addold.h"
+#include "subold.h"
+#include "logicalutil.h"
+#include "logicalold.h"
+#include "mul.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
+
 uint64_t invert_limb(uint64_t d);
 
 struct __div2by1_inv_result

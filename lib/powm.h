@@ -1,10 +1,19 @@
 #ifndef POWM_H_INCLUDED
 
-#include <stdlib.h>
+#include "c.h"
+#include "uint32gmp.h"
+#include "uint64gmp.h"
+#include "compare.h"
+#include "util.h"
+#include "utilold.h"
+#include "addold.h"
+#include "subold.h"
+#include "mul.h"
+#include "logicalutil.h"
+#include "div.h"
+#include "toom.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
+
 void wmpn_redc_1(uint64_t * rp, uint64_t * up, uint64_t * mp, int32_t n,
                  uint64_t invm);
 
