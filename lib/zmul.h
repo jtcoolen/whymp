@@ -1,10 +1,20 @@
 #ifndef ZMUL_H_INCLUDED
 
-#include <stdlib.h>
+#include "c.h"
+#include "util.h"
+#include "utilold.h"
+#include "alias.h"
+#include "compare.h"
+#include "uint64gmp.h"
+#include "add.h"
+#include "sub.h"
+#include "mul.h"
+#include "toom.h"
+#include "z.h"
+#include "zutil.h"
+#include "set.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
+
 void wmpz_mul(wmpz_ptr w, wmpz_ptr u, wmpz_ptr v);
 
 void wmpz_mul_si(wmpz_ptr prod, wmpz_ptr mult, int64_t small_mult);

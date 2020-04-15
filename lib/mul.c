@@ -1,27 +1,5 @@
-#include <stdlib.h>
+#include "mul.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "int.h"
-
-#include "int32.h"
-
-#include "uint64gmp.h"
-
-#include "power.h"
-
-#include "c.h"
-
-#include "array.h"
-
-#include "map.h"
-
-#include "types.h"
-
-#include "util.h"
-
-#include "add.h"
 
 uint64_t wmpn_mul_1(uint64_t * r, uint64_t * x, int32_t sz, uint64_t y) {
   uint64_t cl, ul;
@@ -42,7 +20,7 @@ uint64_t wmpn_mul_1(uint64_t * r, uint64_t * x, int32_t sz, uint64_t y) {
     l = struct_res.__field_0;
     h = struct_res.__field_1;
     lpl = l + cl;
-    cl = (lpl < cl ? UINT64_C(1) : UINT64_C(0)) + h;
+    cl = (lpl < cl) + h;
     *rp = lpl;
     rp = rp + 1;
     n = n - 1;
@@ -71,10 +49,10 @@ uint64_t wmpn_addmul_1(uint64_t * r, uint64_t * x, int32_t sz, uint64_t y) {
     l = struct_res.__field_0;
     h = struct_res.__field_1;
     lpl = l + cl;
-    cl = (lpl < cl ? UINT64_C(1) : UINT64_C(0)) + h;
+    cl = (lpl < cl) + h;
     rl = *rp;
     lpl = rl + lpl;
-    cl = (lpl < rl ? UINT64_C(1) : UINT64_C(0)) + cl;
+    cl = (lpl < rl) + cl;
     *rp = lpl;
     rp = rp + 1;
     n = n - 1;
@@ -125,7 +103,7 @@ uint64_t wmpn_mul_1_in_place(uint64_t * x, int32_t sz, uint64_t y) {
     l = struct_res.__field_0;
     h = struct_res.__field_1;
     lpl = l + cl;
-    cl = (lpl < cl ? UINT64_C(1) : UINT64_C(0)) + h;
+    cl = (lpl < cl) + h;
     *up = lpl;
     up = up + 1;
     n = n - 1;
@@ -154,10 +132,10 @@ uint64_t wmpn_submul_1(uint64_t * r, uint64_t * x, int32_t sz, uint64_t y) {
     l = struct_res.__field_0;
     h = struct_res.__field_1;
     lpl = l + cl;
-    cl = (lpl < cl ? UINT64_C(1) : UINT64_C(0)) + h;
+    cl = (lpl < cl) + h;
     rl = *rp;
     lpl = rl - lpl;
-    cl = (lpl > rl ? UINT64_C(1) : UINT64_C(0)) + cl;
+    cl = (lpl > rl) + cl;
     *rp = lpl;
     rp = rp + 1;
     n = n - 1;
@@ -175,4 +153,3 @@ uint64_t wmpn_addmul_2(uint64_t * r, uint64_t * x, int32_t sz, uint64_t * y) {
   y1 = y[1];
   return wmpn_addmul_1(r1, x, sz, y1);
 }
-

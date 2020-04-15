@@ -1,53 +1,5 @@
-#include <stdlib.h>
+#include "sqrt.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "array.h"
-
-#include "map.h"
-
-#include "c.h"
-
-#include "int32.h"
-
-#include "uint64gmp.h"
-
-#include "euclideandivision.h"
-
-#include "int.h"
-
-#include "power.h"
-
-#include "types.h"
-
-#include "compare.h"
-
-#include "utilold.h"
-
-#include "add_1.h"
-
-#include "addold.h"
-
-#include "sub_1.h"
-
-#include "subold.h"
-
-#include "mul.h"
-
-#include "logicalutil.h"
-
-#include "logical.h"
-
-#include "div.h"
-
-#include "sqrt1.h"
-
-#include "alias.h"
-
-#include "explog.h"
-
-#include "toom.h"
 
 uint64_t wmpn_sqrtrem2(uint64_t * sp, uint64_t * rp, uint64_t * np) {
   uint64_t np0, o, prec, nph, rq, u, uh;
@@ -58,7 +10,7 @@ uint64_t wmpn_sqrtrem2(uint64_t * sp, uint64_t * rp, uint64_t * np) {
   o = sqrt1(rp, np[1]);
   sp0 = o;
   rp0 = *rp;
-  prec = (64) / UINT64_C(2);
+  prec = 64 / UINT64_C(2);
   nph = np0 >> (prec + UINT64_C(1));
   rp0 = (rp0 << (prec - UINT64_C(1))) + nph;
   q = rp0 / sp0;
@@ -143,7 +95,7 @@ uint64_t wmpn_dc_sqrtrem(uint64_t * sp, uint64_t * np, int32_t n,
     IGNORE2(sp,scratch);
     res;
     st = sp[l - 1];
-    ql = q << ((64) - UINT64_C(1));
+    ql = q << (64 - UINT64_C(1));
     qh = q >> UINT64_C(1);
     sp[l - 1] = st + ql;
     q = qh;
@@ -304,4 +256,3 @@ int32_t wmpn_sqrtrem(uint64_t * sp, uint64_t * rp, uint64_t * np, int32_t n) {
   }
   return rn;
 }
-

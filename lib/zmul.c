@@ -1,45 +1,5 @@
-#include <stdlib.h>
+#include "zmul.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "int.h"
-
-#include "power.h"
-
-#include "map.h"
-
-#include "c.h"
-
-#include "util.h"
-
-#include "utilold.h"
-
-#include "alias.h"
-
-#include "compare.h"
-
-#include "uint64gmp.h"
-
-#include "add.h"
-
-#include "sub.h"
-
-#include "mul.h"
-
-#include "toom.h"
-
-#include "abs.h"
-
-#include "z.h"
-
-#include "zutil.h"
-
-#include "int64.h"
-
-#include "set.h"
-
-#include "bool.h"
 
 void wmpz_mul(wmpz_ptr w, wmpz_ptr u, wmpz_ptr v) {
   wmpz_ptr u1, v1;
@@ -56,14 +16,17 @@ void wmpz_mul(wmpz_ptr w, wmpz_ptr u, wmpz_ptr v) {
   int freew;
   int32_t wsize1;
   wmpz_ptr uqt, vqt, wqt;
-  wmpz_ptr o;
+  wmpz_ptr nw;
+  __wmpz_struct t = { 0, 0, NULL };
   uint64_t * wpqt;
   uint64_t * wp1;
   uint64_t * up1;
-  wmpz_ptr o1;
+  wmpz_ptr nu;
+  __wmpz_struct t1 = { 0, 0, NULL };
   uint64_t * wp2;
   uint64_t * vp1;
-  wmpz_ptr o2;
+  wmpz_ptr nv;
+  __wmpz_struct t2 = { 0, 0, NULL };
   uint64_t * upqt;
   uint64_t * vpqt;
   uint64_t * wpqt1;
@@ -104,7 +67,7 @@ void wmpz_mul(wmpz_ptr w, wmpz_ptr u, wmpz_ptr v) {
       cy = cy1;
     }
     wp[usize] = cy;
-    usize = usize + (!(cy == UINT64_C(0)) ? 1 : 0);
+    usize = usize + !(cy == UINT64_C(0));
     if (sign_product >= 0) {
       wsize = usize;
     } else {
@@ -121,16 +84,17 @@ void wmpz_mul(wmpz_ptr w, wmpz_ptr u, wmpz_ptr v) {
   wqt = w;
   if (ALLOC(w) < wsize1) {
     freew = 1;
-    o = __wmpz_init();
-    wqt = o;
+    nw = &t;
+    __wmpz_init(nw);
+    wqt = nw;
     wpqt = wmpz_realloc(wqt, wsize1);
     (void)(wqt);
   } else {
     if (uw) {
       wp1 = PTR(w);
       up1 = alloca((uint32_t)usize * sizeof(uint64_t));
-      o1 = __wmpz_init();
-      uqt = o1;
+      nu = &t1;
+      uqt = nu;
       ALLOC(uqt) = usize;
       wmpn_copyi1(up1, wp1, usize);
       PTR(uqt) = up1;
@@ -144,8 +108,8 @@ void wmpz_mul(wmpz_ptr w, wmpz_ptr u, wmpz_ptr v) {
       if (vw) {
         wp2 = PTR(w);
         vp1 = alloca((uint32_t)vsize * sizeof(uint64_t));
-        o2 = __wmpz_init();
-        vqt = o2;
+        nv = &t2;
+        vqt = nv;
         ALLOC(vqt) = vsize;
         wmpn_copyi1(vp1, wp2, vsize);
         PTR(vqt) = vp1;
@@ -164,8 +128,9 @@ void wmpz_mul(wmpz_ptr w, wmpz_ptr u, wmpz_ptr v) {
   if (freew) {
     wp3 = PTR(w);
     free(wp3);
+    ALLOC(w) = wsize1;
   }
-  wsize1 = wsize1 - (cy2 == UINT64_C(0) ? 1 : 0);
+  wsize1 = wsize1 - (cy2 == UINT64_C(0));
   wsize1 = sign_product < 0 ? -wsize1 : wsize1;
   PTR(w) = wpqt1;
   SIZ(w) = wsize1;
@@ -197,7 +162,7 @@ void wmpz_mul_si(wmpz_ptr prod, wmpz_ptr mult, int64_t small_mult) {
     cy = cy1;
   }
   pp[size] = cy;
-  size = size + (!(cy == UINT64_C(0)) ? 1 : 0);
+  size = size + !(cy == UINT64_C(0));
   size = (sign_product < 0) ^ (small_mult < INT64_C(0)) ? -size : size;
   SIZ(prod) = size;
   (void)(prod);
@@ -226,10 +191,9 @@ void wmpz_mul_ui(wmpz_ptr prod, wmpz_ptr mult, uint64_t small_mult) {
     cy = cy1;
   }
   pp[size] = cy;
-  size = size + (!(cy == UINT64_C(0)) ? 1 : 0);
+  size = size + !(cy == UINT64_C(0));
   size = sign_product < 0 ? -size : size;
   SIZ(prod) = size;
   (void)(prod);
   return;
 }
-

@@ -1,27 +1,5 @@
-#include <stdlib.h>
+#include "logicalold.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "int.h"
-
-#include "int32.h"
-
-#include "uint64gmp.h"
-
-#include "power.h"
-
-#include "c.h"
-
-#include "array.h"
-
-#include "map.h"
-
-#include "types.h"
-
-#include "euclideandivision.h"
-
-#include "logicalutil.h"
 
 uint64_t wmpn_lshift1(uint64_t * r, uint64_t * x, int32_t sz, uint64_t cnt) {
   int32_t msb;
@@ -156,4 +134,3 @@ uint64_t wmpn_rshift_in_place(uint64_t * x, int32_t sz, uint64_t cnt) {
   x[msb] = low;
   return retval;
 }
-

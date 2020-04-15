@@ -1,49 +1,7 @@
-#include <stdlib.h>
+#include "toom.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "array.h"
 
-#include "map.h"
-
-#include "c.h"
-
-#include "int32.h"
-
-#include "uint64gmp.h"
-
-#include "int.h"
-
-#include "power.h"
-
-#include "computerdivision.h"
-
-#include "types.h"
-
-#include "compare.h"
-
-#include "util.h"
-
-#include "utilold.h"
-
-#include "add_1.h"
-
-#include "addold.h"
-
-#include "sub_1.h"
-
-#include "subold.h"
-
-#include "mul.h"
-
-#include "mul_basecase.h"
-
-#include "logical.h"
-
-int32_t toom22_threshold() {
-  return 29;
-}
+int32_t toom22_threshold = 29;
 
 void wmpn_toom22_mul(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
                      int32_t sy, uint64_t * scratch);
@@ -79,8 +37,6 @@ void wmpn_toom22_mul(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
   uint64_t * y0t;
   int c0, c1;
   uint64_t * ysm1t;
-  int32_t i;
-  uint64_t lzero;
   uint64_t * v0;
   uint64_t * v0n;
   uint64_t * vinfn;
@@ -135,12 +91,7 @@ void wmpn_toom22_mul(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
     if (c0 && c1) {
       wmpn_sub_n1(ysm1, y1, y0, t);
       ysm1t = ysm1 + t;
-      i = 0;
-      lzero = UINT64_C(0);
-      while (i < n - t) {
-        ysm1t[i] = lzero;
-        i = i + 1;
-      }
+      wmpn_zero(ysm1t, n - t);
       vm1_neg = !(vm1_neg);
     } else {
       wmpn_sub1(ysm1, y0, n, y1, t);
@@ -190,7 +141,7 @@ void wmpn_toom22_mul(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
 
 void wmpn_toom22_mul_rec(uint64_t * r, uint64_t * x, int32_t sx,
                          uint64_t * y, int32_t sy, uint64_t * scratch) {
-  if (sy <= toom22_threshold()) {
+  if (sy <= toom22_threshold) {
     wmpn_mul_basecase(r, x, sx, y, sy);
     return;
   } else {
@@ -206,7 +157,7 @@ void wmpn_toom22_mul_rec(uint64_t * r, uint64_t * x, int32_t sx,
 
 void wmpn_toom22_mul_n_rec(uint64_t * r, uint64_t * x, uint64_t * y,
                            uint64_t * scratch, int32_t sz) {
-  if (sz <= toom22_threshold()) {
+  if (sz <= toom22_threshold) {
     wmpn_mul_basecase(r, x, sz, y, sz);
     return;
   } else {
@@ -241,8 +192,6 @@ void wmpn_toom32_mul(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
   int c0, c1;
   int32_t cmp2;
   uint64_t * ym1t;
-  int32_t i;
-  uint64_t lzero;
   uint64_t cy;
   uint64_t * sn;
   uint64_t c2, c3;
@@ -325,12 +274,7 @@ void wmpn_toom32_mul(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
     if (c0 && c1) {
       wmpn_sub_n1(ym1, y1, y0, t);
       ym1t = ym1 + t;
-      i = 0;
-      lzero = UINT64_C(0);
-      while (i < n - t) {
-        ym1t[i] = lzero;
-        i = i + 1;
-      }
+      wmpn_zero(ym1t, n - t);
       vm1_neg = !(vm1_neg);
     } else {
       wmpn_sub1(ym1, y0, n, y1, t);
@@ -460,7 +404,7 @@ uint64_t wmpn_mul(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
   uint64_t cy1;
   uint64_t * rpn1;
   uint64_t * wsy1;
-  if (sy <= toom22_threshold()) {
+  if (sy <= toom22_threshold) {
     wmpn_mul_basecase(r, x, sx, y, sy);
   } else {
     scratch = alloca((uint32_t)(5 * sy + 128) * sizeof(uint64_t));
@@ -516,7 +460,7 @@ uint64_t wmpn_mul(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
 
 void wmpn_mul_n(uint64_t * r, uint64_t * x, uint64_t * y, int32_t sz) {
   uint64_t * ws;
-  if (sz <= toom22_threshold()) {
+  if (sz <= toom22_threshold) {
     wmpn_mul_basecase(r, x, sz, y, sz);
     return;
   } else {
@@ -525,4 +469,3 @@ void wmpn_mul_n(uint64_t * r, uint64_t * x, uint64_t * y, int32_t sz) {
     return;
   }
 }
-

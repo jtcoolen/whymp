@@ -1,34 +1,11 @@
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "int.h"
-
-#include "euclideandivision.h"
-
-#include "realinfix.h"
-
-#include "square.h"
-
-#include "uint64.h"
-
-#include "power.h"
-
-#include "map.h"
-
-#include "c.h"
-
-#include "fxp.h"
-
-
+#include "sqrt1.h"
 #include "sqrtinit.h"
 
 uint64_t rsa_estimate (uint64_t a) {
-uint64_t abits, x0;
-abits = a >> 55;
-x0 = 0x100 | invsqrttab[abits - 0x80];
-return x0;
+  uint64_t abits, x0;
+  abits = a >> 55;
+  x0 = 0x100 | invsqrttab[abits - 0x80];
+  return x0;
 }
 
 uint64_t sqrt1(uint64_t * rp, uint64_t a0) {
@@ -58,4 +35,3 @@ uint64_t sqrt1(uint64_t * rp, uint64_t a0) {
   *rp = a0 - s;
   return c;
 }
-

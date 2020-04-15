@@ -1,10 +1,10 @@
 #ifndef LOGICALOLD_H_INCLUDED
 
-#include <stdlib.h>
+#include "uint64gmp.h"
+#include "c.h"
+#include "logicalutil.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
+
 uint64_t wmpn_lshift1(uint64_t * r, uint64_t * x, int32_t sz, uint64_t cnt);
 
 uint64_t wmpn_rshift1(uint64_t * r, uint64_t * x, int32_t sz, uint64_t cnt);

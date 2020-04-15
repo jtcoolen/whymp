@@ -1,29 +1,5 @@
-#include <stdlib.h>
+#include "mul_basecase.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "int.h"
-
-#include "int32.h"
-
-#include "uint64gmp.h"
-
-#include "power.h"
-
-#include "c.h"
-
-#include "array.h"
-
-#include "map.h"
-
-#include "types.h"
-
-#include "util.h"
-
-#include "add.h"
-
-#include "mul.h"
 
 void wmpn_mul_basecase(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
                        int32_t sy) {
@@ -52,4 +28,3 @@ void wmpn_mul_basecase(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
     vn = vn - 1;
   }
 }
-

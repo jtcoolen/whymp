@@ -1,37 +1,5 @@
-#include <stdlib.h>
+#include "zsub.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "int.h"
-
-#include "power.h"
-
-#include "map.h"
-
-#include "c.h"
-
-#include "util.h"
-
-#include "alias.h"
-
-#include "compare.h"
-
-#include "uint64gmp.h"
-
-#include "add.h"
-
-#include "sub.h"
-
-#include "abs.h"
-
-#include "z.h"
-
-#include "zutil.h"
-
-#include "add_1.h"
-
-#include "sub_1.h"
 
 void wmpz_sub(wmpz_ptr w, wmpz_ptr u, wmpz_ptr v) {
   wmpz_ptr u1, v1;
@@ -103,12 +71,7 @@ void wmpz_sub(wmpz_ptr w, wmpz_ptr u, wmpz_ptr v) {
         }
       }
       wsize = abs_usize;
-      while (wsize > 0) {
-        if (!(wp[wsize - 1] == UINT64_C(0))) {
-          break;
-        }
-        wsize = wsize - 1;
-      }
+      normalize(wp, &wsize);
       if (usize < 0) {
         wsize = -wsize;
       }
@@ -118,23 +81,13 @@ void wmpz_sub(wmpz_ptr w, wmpz_ptr u, wmpz_ptr v) {
         vp2 = PTR(v1);
         if (wmpn_cmp(wp, vp2, abs_usize) < 0) {
           usb3 = sub_n_ry(vp2, wp, abs_usize);
-          while (wsize > 0) {
-            if (!(wp[wsize - 1] == UINT64_C(0))) {
-              break;
-            }
-            wsize = wsize - 1;
-          }
+          normalize(wp, &wsize);
           if (usize >= 0) {
             wsize = -wsize;
           }
         } else {
           usb4 = sub_n_rx(wp, vp2, abs_usize);
-          while (wsize > 0) {
-            if (!(wp[wsize - 1] == UINT64_C(0))) {
-              break;
-            }
-            wsize = wsize - 1;
-          }
+          normalize(wp, &wsize);
           if (usize < 0) {
             wsize = -wsize;
           }
@@ -145,23 +98,13 @@ void wmpz_sub(wmpz_ptr w, wmpz_ptr u, wmpz_ptr v) {
           up2 = PTR(u1);
           if (wmpn_cmp(up2, wp, abs_usize) < 0) {
             usb5 = sub_n_rx(wp, up2, abs_usize);
-            while (wsize > 0) {
-              if (!(wp[wsize - 1] == UINT64_C(0))) {
-                break;
-              }
-              wsize = wsize - 1;
-            }
+            normalize(wp, &wsize);
             if (usize >= 0) {
               wsize = -wsize;
             }
           } else {
             usb6 = sub_n_ry(up2, wp, abs_usize);
-            while (wsize > 0) {
-              if (!(wp[wsize - 1] == UINT64_C(0))) {
-                break;
-              }
-              wsize = wsize - 1;
-            }
+            normalize(wp, &wsize);
             if (usize < 0) {
               wsize = -wsize;
             }
@@ -172,23 +115,13 @@ void wmpz_sub(wmpz_ptr w, wmpz_ptr u, wmpz_ptr v) {
           vp3 = PTR(v1);
           if (wmpn_cmp(up3, vp3, abs_usize) < 0) {
             usb7 = sub_n(wp, vp3, up3, abs_usize);
-            while (wsize > 0) {
-              if (!(wp[wsize - 1] == UINT64_C(0))) {
-                break;
-              }
-              wsize = wsize - 1;
-            }
+            normalize(wp, &wsize);
             if (usize >= 0) {
               wsize = -wsize;
             }
           } else {
             usb8 = sub_n(wp, up3, vp3, abs_usize);
-            while (wsize > 0) {
-              if (!(wp[wsize - 1] == UINT64_C(0))) {
-                break;
-              }
-              wsize = wsize - 1;
-            }
+            normalize(wp, &wsize);
             if (usize < 0) {
               wsize = -wsize;
             }
@@ -245,7 +178,7 @@ void wmpz_sub_ui(wmpz_ptr w, wmpz_ptr u, uint64_t v) {
   if (usize == 0) {
     wp = PTR(w);
     *wp = v;
-    SIZ(w) = -(!(v == UINT64_C(0)) ? 1 : 0);
+    SIZ(w) = -(!(v == UINT64_C(0)));
     (void)(w);
     return;
   }
@@ -277,7 +210,7 @@ void wmpz_sub_ui(wmpz_ptr w, wmpz_ptr u, uint64_t v) {
         wsize = -1;
       } else {
         wmpn_sub_1_in_place(wp1, abs_usize, v);
-        wsize = abs_usize - (wp1[abs_usize - 1] == UINT64_C(0) ? 1 : 0);
+        wsize = abs_usize - (wp1[abs_usize - 1] == UINT64_C(0));
       }
     } else {
       up1 = PTR(u);
@@ -286,7 +219,7 @@ void wmpz_sub_ui(wmpz_ptr w, wmpz_ptr u, uint64_t v) {
         wsize = -1;
       } else {
         wmpn_sub_1(wp1, up1, abs_usize, v);
-        wsize = abs_usize - (wp1[abs_usize - 1] == UINT64_C(0) ? 1 : 0);
+        wsize = abs_usize - (wp1[abs_usize - 1] == UINT64_C(0));
       }
       (void)(u);
     }
@@ -319,7 +252,7 @@ void wmpz_ui_sub(wmpz_ptr w, uint64_t uval, wmpz_ptr v) {
       wmpn_sub_1(wp, vp, vsize, uval);
       (void)(v);
     }
-    wsize = -(vsize - (wp[vsize - 1] == UINT64_C(0) ? 1 : 0));
+    wsize = -(vsize - (wp[vsize - 1] == UINT64_C(0)));
     SIZ(w) = wsize;
     (void)(w);
     return;
@@ -329,7 +262,7 @@ void wmpz_ui_sub(wmpz_ptr w, uint64_t uval, wmpz_ptr v) {
       if (vw) {
         if (uval >= *wp1) {
           *wp1 = uval - *wp1;
-          wsize = !(*wp1 == UINT64_C(0)) ? 1 : 0;
+          wsize = !(*wp1 == UINT64_C(0));
         } else {
           *wp1 = *wp1 - uval;
           wsize = -1;
@@ -338,7 +271,7 @@ void wmpz_ui_sub(wmpz_ptr w, uint64_t uval, wmpz_ptr v) {
         vp1 = PTR(v);
         if (uval >= *vp1) {
           *wp1 = uval - *vp1;
-          wsize = !(*wp1 == UINT64_C(0)) ? 1 : 0;
+          wsize = !(*wp1 == UINT64_C(0));
         } else {
           *wp1 = *vp1 - uval;
           wsize = -1;
@@ -352,7 +285,7 @@ void wmpz_ui_sub(wmpz_ptr w, uint64_t uval, wmpz_ptr v) {
       if (vsize == 0) {
         wp2 = PTR(w);
         *wp2 = uval;
-        wsize = !(uval == UINT64_C(0)) ? 1 : 0;
+        wsize = !(uval == UINT64_C(0));
         SIZ(w) = wsize;
         (void)(w);
         return;
@@ -362,12 +295,12 @@ void wmpz_ui_sub(wmpz_ptr w, uint64_t uval, wmpz_ptr v) {
         if (vw) {
           cy = wmpn_add_1_in_place(wp3, vsize, uval);
           wp3[vsize] = cy;
-          wsize = vsize + (!(cy == UINT64_C(0)) ? 1 : 0);
+          wsize = vsize + !(cy == UINT64_C(0));
         } else {
           vp2 = PTR(v);
           cy1 = wmpn_add_1(wp3, vp2, vsize, uval);
           wp3[vsize] = cy1;
-          wsize = vsize + (!(cy1 == UINT64_C(0)) ? 1 : 0);
+          wsize = vsize + !(cy1 == UINT64_C(0));
           (void)(v);
         }
         SIZ(w) = wsize;
@@ -377,4 +310,3 @@ void wmpz_ui_sub(wmpz_ptr w, uint64_t uval, wmpz_ptr v) {
     }
   }
 }
-

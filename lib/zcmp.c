@@ -1,31 +1,5 @@
-#include <stdlib.h>
+#include "zcmp.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "int.h"
-
-#include "power.h"
-
-#include "map.h"
-
-#include "c.h"
-
-#include "compare.h"
-
-#include "alias.h"
-
-#include "compare.h"
-
-#include "uint64gmp.h"
-
-#include "abs.h"
-
-#include "z.h"
-
-#include "zutil.h"
-
-#include "types.h"
 
 int32_t wmpz_cmp(wmpz_ptr u, wmpz_ptr v) {
   int32_t usize, vsize, dsize, asize;
@@ -86,3 +60,38 @@ int32_t wmpz_cmp_ui(wmpz_ptr u, uint64_t v_digit) {
   }
 }
 
+int32_t wmpz_cmp_si(wmpz_ptr u, int64_t v_digit) {
+  int32_t usize, vsize;
+  uint64_t * up;
+  uint64_t ul, vl;
+  usize = SIZ(u);
+  vsize = (v_digit > INT64_C(0)) - (v_digit < INT64_C(0));
+  if (usize == 0 || !(usize == vsize)) {
+    return usize - vsize;
+  } else {
+    up = PTR(u);
+    ul = *up;
+    vl = abs_cast(v_digit);
+    (void)(u);
+    if (ul == vl) {
+      return 0;
+    }
+    if (ul > vl) {
+      return usize;
+    } else {
+      return -usize;
+    }
+  }
+}
+
+int32_t wmpz_sgn(wmpz_ptr u) {
+  if (SIZ(u) < 0) {
+    return -1;
+  } else {
+    if (SIZ(u) > 0) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+}

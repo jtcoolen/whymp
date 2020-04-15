@@ -12,6 +12,15 @@
 /libwmp.a
 
 /autom4te.cache/
+
 /lib/*.o
 /lib/.deps/
 /lib/.dirstamp
+/lib/extracted
+
+/lib/alias.c
+/lib/c.c
+/lib/fxp.c
+/lib/uint32gmp.c
+/lib/uint64gmp.c
+/lib/z.c

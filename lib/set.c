@@ -1,27 +1,5 @@
-#include <stdlib.h>
+#include "set.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "int.h"
-
-#include "euclideandivision.h"
-
-#include "abs.h"
-
-#include "map.h"
-
-#include "c.h"
-
-#include "int32.h"
-
-#include "int64.h"
-
-#include "uint64gmp.h"
-
-#include "z.h"
-
-#include "zutil.h"
 
 void wmpz_set_ui(wmpz_ptr dst, uint64_t src) {
   uint64_t * dstp;
@@ -79,4 +57,3 @@ uint64_t wmpz_get_ui(wmpz_ptr src) {
   (void)(src);
   return v;
 }
-

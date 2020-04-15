@@ -1,41 +1,5 @@
-#include <stdlib.h>
+#include "zmul2exp.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
-#include "int.h"
-
-#include "euclideandivision.h"
-
-#include "power.h"
-
-#include "map.h"
-
-#include "c.h"
-
-#include "util.h"
-
-#include "utilold.h"
-
-#include "alias.h"
-
-#include "compare.h"
-
-#include "uint64gmp.h"
-
-#include "types.h"
-
-#include "logicalutil.h"
-
-#include "logical.h"
-
-#include "logicalold.h"
-
-#include "abs.h"
-
-#include "z.h"
-
-#include "zutil.h"
 
 void wmpz_mul2exp(wmpz_ptr r, wmpz_ptr u, uint64_t cnt) {
   int32_t un, limb_cnt;
@@ -47,8 +11,6 @@ void wmpz_mul2exp(wmpz_ptr r, wmpz_ptr u, uint64_t cnt) {
   uint64_t * rl1;
   uint64_t rlimb1;
   uint64_t * rl2;
-  int32_t i;
-  uint64_t lzero;
   if (SIZ(u) >= 0) {
     un = SIZ(u);
   } else {
@@ -67,7 +29,7 @@ void wmpz_mul2exp(wmpz_ptr r, wmpz_ptr u, uint64_t cnt) {
         rl = rp + limb_cnt;
         rlimb = wmpn_lshift(rl, rp, un, c);
         rp[rn] = rlimb;
-        rn = rn + (!(rlimb == UINT64_C(0)) ? 1 : 0);
+        rn = rn + !(rlimb == UINT64_C(0));
       } else {
         wmpn_copyd(rp + limb_cnt, rp, un);
       }
@@ -77,22 +39,16 @@ void wmpz_mul2exp(wmpz_ptr r, wmpz_ptr u, uint64_t cnt) {
         rl1 = rp + limb_cnt;
         rlimb1 = wmpn_lshift1(rl1, up, un, c);
         rp[rn] = rlimb1;
-        rn = rn + (!(rlimb1 == UINT64_C(0)) ? 1 : 0);
+        rn = rn + !(rlimb1 == UINT64_C(0));
       } else {
         rl2 = rp + limb_cnt;
         wmpn_copyi1(rl2, up, un);
       }
       (void)(u);
     }
-    i = 0;
-    lzero = UINT64_C(0);
-    while (i < limb_cnt) {
-      rp[i] = lzero;
-      i = i + 1;
-    }
+    wmpn_zero(rp, limb_cnt);
     SIZ(r) = SIZ(u) >= 0 ? rn : -rn;
     (void)(r);
     return;
   }
 }
-

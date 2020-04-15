@@ -1,10 +1,11 @@
 #ifndef MUL_H_INCLUDED
 
-#include <stdlib.h>
+#include "uint64gmp.h"
+#include "c.h"
+#include "util.h"
+#include "add.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
+
 uint64_t wmpn_mul_1(uint64_t * r, uint64_t * x, int32_t sz, uint64_t y);
 
 uint64_t wmpn_addmul_1(uint64_t * r, uint64_t * x, int32_t sz, uint64_t y);

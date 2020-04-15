@@ -1,14 +1,20 @@
 #ifndef DIV_H_INCLUDED
 
-#include <stdlib.h>
+#include "uint64gmp.h"
+#include "c.h"
+#include "compare.h"
+#include "utilold.h"
+#include "addold.h"
+#include "subold.h"
+#include "logicalutil.h"
+#include "logicalold.h"
+#include "mul.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <assert.h>
-#include <alloca.h>
+
 uint64_t invert_limb(uint64_t d);
 
-struct __div2by1_inv_result
-{ uint64_t __field_0;
+struct __div2by1_inv_result {
+  uint64_t __field_0;
   uint64_t __field_1;
 };
 
@@ -17,8 +23,8 @@ struct __div2by1_inv_result div2by1_inv(uint64_t uh, uint64_t ul, uint64_t d,
 
 uint64_t wmpn_divrem_1(uint64_t * q, uint64_t * x, int32_t sz, uint64_t y);
 
-struct __div3by2_inv_result
-{ uint64_t __field_0;
+struct __div3by2_inv_result {
+  uint64_t __field_0;
   uint64_t __field_1;
   uint64_t __field_2;
 };
