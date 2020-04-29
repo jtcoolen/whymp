@@ -1,4 +1,4 @@
-AUTOMAKE_OPTIONS = foreign subdir-objects
+AUTOMAKE_OPTIONS = foreign subdir-objects no-dependencies
 
 EXTRA_DIST = COPYING.md COPYING.GPLv3.md NEWS.md README.md
 
