@@ -40,16 +40,21 @@ void wmpz_set_ui (wmpz_ptr, uint64_t);
 void wmpz_set_si (wmpz_ptr, int64_t);
 uint64_t wmpz_get_ui (wmpz_srcptr);
 
+// whitespace, leading base prefix, and base detection are not supported.
+int32_t wmpz_set_str (wmpz_ptr, char const *, int32_t base);
+// not verified when size >= 0x2000000.
+// sp == NULL is not supported.
+char *wmpz_get_str (char *, int32_t base, wmpz_srcptr);
+
 int32_t wmpz_cmp (wmpz_srcptr, wmpz_srcptr);
 int32_t wmpz_cmp_ui (wmpz_srcptr, uint64_t);
-int32_t wmpz_cmp_si(wmpz_srcptr, int64_t);
+int32_t wmpz_cmp_si (wmpz_srcptr, int64_t);
 
-int32_t wmpz_cmpabs(wmpz_srcptr, wmpz_srcptr);
-int32_t wmpz_cmpabs_ui(wmpz_srcptr, uint64_t);
+int32_t wmpz_cmpabs (wmpz_srcptr, wmpz_srcptr);
+int32_t wmpz_cmpabs_ui (wmpz_srcptr, uint64_t);
 
-int32_t wmpz_sgn(wmpz_srcptr);
-
-void wmpz_abs(wmpz_ptr, wmpz_srcptr);
+int32_t wmpz_sgn (wmpz_srcptr);
+void wmpz_abs (wmpz_ptr, wmpz_srcptr);
 
 void wmpz_add (wmpz_ptr, wmpz_srcptr, wmpz_srcptr);
 void wmpz_add_ui (wmpz_ptr, wmpz_srcptr, uint64_t);
@@ -68,8 +73,6 @@ void wmpz_tdiv_q_2exp (wmpz_ptr, wmpz_srcptr, uint64_t);
 void wmpz_tdiv_qr (wmpz_ptr quot, wmpz_ptr rem, wmpz_srcptr, wmpz_srcptr);
 uint64_t wmpz_tdiv_qr_ui (wmpz_ptr quot, wmpz_ptr rem, wmpz_srcptr, uint64_t);
 
-char *wmpz_get_str (char *, int32_t base, wmpz_srcptr);
-int32_t wmpz_set_str (wmpz_ptr, char const *, int32_t base);
 
 
 int32_t wmpn_cmp (wmp_srcptr, wmp_srcptr, wmp_size_t);
@@ -110,8 +113,9 @@ void wmpn_tdiv_qr (wmp_ptr qp, wmp_ptr rp, wmp_size_t qxn, wmp_srcptr np,
 // not verified when rp and np are aliased.
 wmp_size_t wmpn_sqrtrem (wmp_ptr sp, wmp_ptr rp, wmp_srcptr np, wmp_size_t);
 
+wmp_size_t wmpn_set_str (wmp_ptr, unsigned char const *, uint32_t, int32_t base);
+// not verified when un >= 0x2000000
 wmp_size_t wmpn_get_str (unsigned char *, int32_t base, wmp_srcptr, wmp_size_t);
-wmp_size_t wmpn_set_str (wmp_ptr, unsigned char const *, size_t, int32_t base);
 
 #ifdef __cplusplus
 }
