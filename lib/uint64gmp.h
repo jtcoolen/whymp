@@ -4,19 +4,21 @@
 
 typedef unsigned __int128 uint128_t;
 
-struct __mul64_double_result
-{ uint64_t __field_0;
+struct __mul64_double_result {
+  uint64_t __field_0;
   uint64_t __field_1;
 };
 
-static inline struct __mul64_double_result mul64_double(uint64_t x, uint64_t y)
+static inline struct __mul64_double_result
+mul64_double(uint64_t x, uint64_t y)
 {
   uint128_t z = (uint128_t)x * (uint128_t)y;
   struct __mul64_double_result result = { z, z >> 64 };
   return result;
 }
 
-static inline uint64_t div64_2by1(uint64_t ul, uint64_t uh, uint64_t d)
+static inline uint64_t
+div64_2by1(uint64_t ul, uint64_t uh, uint64_t d)
 {
   return (((uint128_t)uh << 64) | ul) / d;
 }
@@ -73,8 +75,8 @@ add64_3(uint64_t x, uint64_t y, uint64_t z)
   return result;
 }
 
-struct __lsld64_result
-{ uint64_t __field_0;
+struct __lsld64_result {
+  uint64_t __field_0;
   uint64_t __field_1;
 };
 

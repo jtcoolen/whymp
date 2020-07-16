@@ -52,11 +52,11 @@ void wmpn_copyd_sep(uint64_t * rp, uint64_t * up, int32_t n) {
   uint64_t * nr;
   uint64_t * nx;
   struct __open_shift_sep_result struct_res;
-  struct_res = open_shift_sep(rp, up, n);
+  struct_res = open_shift_sep(rp, up);
   nr = struct_res.__field_0;
   nx = struct_res.__field_1;
   wmpn_copyd(nr, nx, n);
-  IGNORE2(rp,up);
+  IGNORE2(rp, up);
   return;
 }
 

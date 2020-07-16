@@ -22,7 +22,7 @@ struct __open_shift_sep_result {
 };
 
 static inline struct __open_sep_result
-open_sep (uint64_t *r, uint64_t *x, int32_t sx, uint64_t *y, int32_t sy)
+open_sep (uint64_t *r, uint64_t *x, uint64_t *y)
 {
   struct __open_sep_result result;
   result.__field_0 = r;
@@ -32,7 +32,7 @@ open_sep (uint64_t *r, uint64_t *x, int32_t sx, uint64_t *y, int32_t sy)
 }
 
 static inline struct __open_rx_result
-open_rx (uint64_t *x, int32_t sx, uint64_t *y, int32_t sy)
+open_rx (uint64_t *x, uint64_t *y)
 {
   struct __open_rx_result result;
   result.__field_0 = x;
@@ -42,7 +42,7 @@ open_rx (uint64_t *x, int32_t sx, uint64_t *y, int32_t sy)
 }
 
 static inline struct __open_shift_sep_result
-open_shift_sep (uint64_t *r, uint64_t *x, int32_t sz)
+open_shift_sep (uint64_t *r, uint64_t *x)
 {
   struct __open_shift_sep_result result;
   result.__field_0 = r;
