@@ -8,7 +8,6 @@ libwmp_a_SOURCES = \
   lib/uint32gmp.h lib/uint64gmp.h lib/fxp.h lib/c.h \
   lib/util.c lib/util.h lib/utilold.c lib/utilold.h \
   lib/logical.c lib/logical.h \
-  lib/logicalutil.c lib/logicalutil.h \
   lib/logicalold.c lib/logicalold.h \
   lib/baseinfo.c lib/baseinfo.h \
   lib/compare.c lib/compare.h \
@@ -28,6 +27,8 @@ libwmp_a_SOURCES = \
   lib/zcmpabs.c lib/zcmpabs.h \
   lib/zsub.c lib/zsub.h lib/zmul.c lib/zmul.h \
   lib/zmul2exp.c lib/zmul2exp.h lib/zdiv2exp.c lib/zdiv2exp.h \
+  lib/zneg.c lib/zneg.h \
+  lib/zrealloc2.c lib/zrealloc2.h \
   lib/zdiv.c lib/zdiv.h \
   lib/zget_str.c lib/zget_str.h \
   lib/zset_str.c lib/zset_str.h

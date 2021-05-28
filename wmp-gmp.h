@@ -41,10 +41,12 @@
 #undef mpz_get_ui
 #undef mpz_init
 #undef mpz_mul
-#undef mpz_mul2exp
+#undef mpz_mul_2exp
 #undef mpz_mul_si
 #undef mpz_mul_ui
+#undef mpz_neg
 #undef mpz_realloc
+#undef mpz_realloc2
 #undef mpz_set_si
 #undef mpz_set_str
 #undef mpz_set_ui
@@ -94,10 +96,12 @@
 #define mpz_get_ui wmpz_get_ui
 #define mpz_init wmpz_init
 #define mpz_mul wmpz_mul
-#define mpz_mul2exp wmpz_mul2exp
+#define mpz_mul_2exp wmpz_mul_2exp
 #define mpz_mul_si wmpz_mul_si
 #define mpz_mul_ui wmpz_mul_ui
+#define mpz_neg wmpz_neg
 #define mpz_realloc wmpz_realloc
+#define mpz_realloc2 wmpz_realloc2
 #define mpz_set_si wmpz_set_si
 #define mpz_set_str wmpz_set_str
 #define mpz_set_ui wmpz_set_ui
