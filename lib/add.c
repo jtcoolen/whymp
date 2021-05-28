@@ -26,11 +26,11 @@ uint64_t wmpn_add_n(uint64_t * r, uint64_t * x, uint64_t * y, int32_t sz) {
 uint64_t wmpn_add(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
                   int32_t sy) {
   uint64_t lx, c;
-  uint64_t o, res;
+  uint64_t result, res;
   int32_t i;
   lx = UINT64_C(0);
-  o = wmpn_add_n(r, x, y, sy);
-  c = o;
+  result = wmpn_add_n(r, x, y, sy);
+  c = result;
   i = sy;
   if (!(c == UINT64_C(0))) {
     while (i < sx) {

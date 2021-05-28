@@ -6,7 +6,6 @@
 #include "alias.h"
 #include "compare.h"
 #include "uint64gmp.h"
-#include "logicalutil.h"
 #include "logical.h"
 #include "logicalold.h"
 #include "z.h"

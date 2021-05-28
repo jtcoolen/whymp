@@ -9,7 +9,6 @@
 #include "addold.h"
 #include "subold.h"
 #include "mul.h"
-#include "logicalutil.h"
 #include "div.h"
 #include "toom.h"
 #include <stdint.h>

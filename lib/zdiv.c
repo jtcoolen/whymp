@@ -102,7 +102,7 @@ uint64_t wmpz_tdiv_qr_ui(wmpz_ptr quot, wmpz_ptr rem, wmpz_ptr dividend,
   int32_t qn;
   uint64_t rl;
   uint64_t * np;
-  uint64_t o, o1;
+  uint64_t result, result1;
   uint64_t * np1;
   int32_t rs;
   uint64_t * rp;
@@ -125,12 +125,12 @@ uint64_t wmpz_tdiv_qr_ui(wmpz_ptr quot, wmpz_ptr rem, wmpz_ptr dividend,
   if (quot == dividend) {
     np = alloca((uint32_t)nn * sizeof(uint64_t));
     wmpn_copyd_sep(np, qp, nn);
-    o = wmpn_divrem_1(qp, np, nn, divisor);
-    rl = o;
+    result = wmpn_divrem_1(qp, np, nn, divisor);
+    rl = result;
   } else {
     np1 = PTR(dividend);
-    o1 = wmpn_divrem_1(qp, np1, nn, divisor);
-    rl = o1;
+    result1 = wmpn_divrem_1(qp, np1, nn, divisor);
+    rl = result1;
     (void)(dividend);
   }
   if (rl == UINT64_C(0)) {

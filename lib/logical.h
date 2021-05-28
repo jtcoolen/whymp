@@ -2,7 +2,6 @@
 
 #include "uint64gmp.h"
 #include "c.h"
-#include "logicalutil.h"
 #include "alias.h"
 #include <stdint.h>
 

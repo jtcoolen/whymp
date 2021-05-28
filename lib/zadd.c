@@ -303,7 +303,7 @@ void wmpz_add_ui(wmpz_ptr w, wmpz_ptr u, uint64_t v) {
   int32_t wsize;
   uint64_t * wp1;
   uint64_t cy;
-  uint64_t o, o1;
+  uint64_t result, result1;
   uint64_t * up;
   uint64_t * up1;
   usize = SIZ(u);
@@ -325,12 +325,12 @@ void wmpz_add_ui(wmpz_ptr w, wmpz_ptr u, uint64_t v) {
   cy = UINT64_C(0);
   if (usize >= 0) {
     if (uw) {
-      o = wmpn_add_1_in_place(wp1, abs_usize, v);
-      cy = o;
+      result = wmpn_add_1_in_place(wp1, abs_usize, v);
+      cy = result;
     } else {
       up = PTR(u);
-      o1 = wmpn_add_1(wp1, up, abs_usize, v);
-      cy = o1;
+      result1 = wmpn_add_1(wp1, up, abs_usize, v);
+      cy = result1;
       (void)(u);
     }
     wp1[abs_usize] = cy;

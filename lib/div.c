@@ -47,7 +47,7 @@ uint64_t wmpn_divrem_1(uint64_t * q, uint64_t * x, int32_t sz, uint64_t y) {
   int32_t i;
   int32_t clz;
   uint64_t ry, v, l, h, qu, rem;
-  struct __lsld_ext_result struct_res;
+  struct __lsld64_result struct_res;
   struct __div2by1_inv_result struct_res1, struct_res2;
   uint64_t v1, qu1, rem1;
   msb = sz - 1;
@@ -60,7 +60,7 @@ uint64_t wmpn_divrem_1(uint64_t * q, uint64_t * x, int32_t sz, uint64_t y) {
     v = invert_limb(ry);
     while (i >= 0) {
       lx = x[i];
-      struct_res = lsld_ext(lx, (uint64_t)clz);
+      struct_res = lsld64(lx, (uint64_t)clz);
       l = struct_res.__field_0;
       h = struct_res.__field_1;
       struct_res1 = div2by1_inv(r + h, l, ry, v);

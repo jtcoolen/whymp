@@ -9,7 +9,6 @@
 #include "sub_1.h"
 #include "subold.h"
 #include "mul.h"
-#include "logicalutil.h"
 #include "logical.h"
 #include "div.h"
 #include "sqrt1.h"

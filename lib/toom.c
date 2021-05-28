@@ -41,7 +41,7 @@ void wmpn_toom22_mul(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
   uint64_t * v0n;
   uint64_t * vinfn;
   uint64_t cy;
-  uint64_t o, c, cy2, cqt, cqtqt, b1;
+  uint64_t result, c, cy2, cqt, cqtqt, b1;
   uint64_t * vinf0;
   uint64_t * vinfn1;
   s = sx / 2;
@@ -108,8 +108,8 @@ void wmpn_toom22_mul(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
   wmpn_toom22_mul_n_rec(v0, x0, y0, s_out, n);
   v0n = v0 + n;
   vinfn = vinf + n;
-  o = wmpn_add_n_in_place(vinf, v0n, n);
-  cy = o;
+  result = wmpn_add_n_in_place(vinf, v0n, n);
+  cy = result;
   c = wmpn_add_n1(v0n, vinf, v0, n);
   cy2 = c + cy;
   cqt = wmpn_add_in_place(vinf, n, vinfn, s + t - n);
@@ -186,7 +186,7 @@ void wmpn_toom32_mul(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
   uint64_t * vm1;
   uint64_t xp1_hi, yp1_hi, hi;
   int vm1_neg;
-  uint64_t o, b, c, o1, o2;
+  uint64_t result, b, c, result1, result2;
   int32_t cmp, cmp1;
   uint64_t * y0t;
   int c0, c1;
@@ -241,8 +241,8 @@ void wmpn_toom32_mul(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
   yp1_hi = UINT64_C(0);
   hi = UINT64_C(0);
   vm1_neg = 0;
-  o = wmpn_add1(xp1, x0, n, x2, s);
-  xp1_hi = o;
+  result = wmpn_add1(xp1, x0, n, x2, s);
+  xp1_hi = result;
   cmp = wmpn_cmp(xp1, x1, n);
   if (xp1_hi == UINT64_C(0) && cmp < 0) {
     wmpn_sub_n1(xm1, x1, xp1, n);
@@ -255,8 +255,8 @@ void wmpn_toom32_mul(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
   c = wmpn_add_n_in_place(xp1, x1, n);
   xp1_hi = xp1_hi + c;
   if (t == n) {
-    o1 = wmpn_add_n1(yp1, y0, y1, n);
-    yp1_hi = o1;
+    result1 = wmpn_add_n1(yp1, y0, y1, n);
+    yp1_hi = result1;
     cmp1 = wmpn_cmp(y0, y1, n);
     if (cmp1 < 0) {
       wmpn_sub_n1(ym1, y1, y0, n);
@@ -265,8 +265,8 @@ void wmpn_toom32_mul(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
       wmpn_sub_n1(ym1, y0, y1, n);
     }
   } else {
-    o2 = wmpn_add1(yp1, y0, n, y1, t);
-    yp1_hi = o2;
+    result2 = wmpn_add1(yp1, y0, n, y1, t);
+    yp1_hi = result2;
     y0t = y0 + t;
     c0 = wmpn_zero_p(y0t, n - t) == 1;
     cmp2 = wmpn_cmp(y0, y1, t);

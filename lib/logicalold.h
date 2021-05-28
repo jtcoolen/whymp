@@ -2,7 +2,6 @@
 
 #include "uint64gmp.h"
 #include "c.h"
-#include "logicalutil.h"
 #include <stdint.h>
 
 uint64_t wmpn_lshift1(uint64_t * r, uint64_t * x, int32_t sz, uint64_t cnt);

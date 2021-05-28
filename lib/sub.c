@@ -26,11 +26,11 @@ uint64_t wmpn_sub_n(uint64_t * r, uint64_t * x, uint64_t * y, int32_t sz) {
 uint64_t wmpn_sub(uint64_t * r, uint64_t * x, int32_t sx, uint64_t * y,
                   int32_t sy) {
   uint64_t lx, b;
-  uint64_t o, res;
+  uint64_t result, res;
   int32_t i;
   lx = UINT64_C(0);
-  o = wmpn_sub_n(r, x, y, sy);
-  b = o;
+  result = wmpn_sub_n(r, x, y, sy);
+  b = result;
   i = sy;
   if (!(b == UINT64_C(0))) {
     while (i < sx) {

@@ -1,7 +1,7 @@
 #include "zmul2exp.h"
 #include <stdint.h>
 
-void wmpz_mul2exp(wmpz_ptr r, wmpz_ptr u, uint64_t cnt) {
+void wmpz_mul_2exp(wmpz_ptr r, wmpz_ptr u, uint64_t cnt) {
   int32_t un, limb_cnt;
   int32_t rn;
   uint64_t * rp;

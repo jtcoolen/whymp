@@ -6,7 +6,6 @@
 #include "utilold.h"
 #include "addold.h"
 #include "subold.h"
-#include "logicalutil.h"
 #include "logicalold.h"
 #include "mul.h"
 #include <stdint.h>

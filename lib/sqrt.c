@@ -54,7 +54,7 @@ uint64_t wmpn_dc_sqrtrem(uint64_t * sp, uint64_t * np, int32_t n,
   uint64_t * npqt;
   uint64_t * spl;
   uint64_t q;
-  uint64_t o, sl, sh;
+  uint64_t result, sl, sh;
   uint64_t * npl;
   int64_t c;
   uint64_t * nr;
@@ -63,10 +63,10 @@ uint64_t wmpn_dc_sqrtrem(uint64_t * sp, uint64_t * np, int32_t n,
   uint64_t res, st, ql, qh, cqt;
   uint64_t * npn;
   int32_t ll;
-  uint64_t bo, b, bo1, o1, cqt1;
+  uint64_t bo, b, bo1, o, cqt1;
   uint64_t * nll;
-  int64_t o2, o3;
-  uint64_t o4, bo2;
+  int64_t o1, o2;
+  uint64_t o3, bo2;
   if (n == 1) {
     r = wmpn_sqrtrem2(sp, scratch, np);
     *np = *scratch;
@@ -76,8 +76,8 @@ uint64_t wmpn_dc_sqrtrem(uint64_t * sp, uint64_t * np, int32_t n,
     h = n - l;
     npqt = np + (l + l);
     spl = sp + l;
-    o = wmpn_dc_sqrtrem(spl, npqt, h, scratch);
-    q = o;
+    result = wmpn_dc_sqrtrem(spl, npqt, h, scratch);
+    q = result;
     if (!(q == UINT64_C(0))) {
       wmpn_sub_n_in_place(npqt, spl, h);
     }
@@ -117,15 +117,15 @@ uint64_t wmpn_dc_sqrtrem(uint64_t * sp, uint64_t * np, int32_t n,
       c = c - (int64_t)bo1;
     }
     if (c < INT64_C(0)) {
-      o1 = wmpn_add_1_in_place(spl, h, q);
-      q = o1;
+      o = wmpn_add_1_in_place(spl, h, q);
+      q = o;
       IGNORE2(sp, spl);
       cqt1 = wmpn_addmul_1(np, sp, n, UINT64_C(2));
       c = c + (int64_t)(UINT64_C(2) * q + cqt1);
-      o4 = wmpn_sub_1_in_place(np, n, UINT64_C(1));
-      o3 = (int64_t)o4;
-      o2 = c - o3;
-      c = o2;
+      o3 = wmpn_sub_1_in_place(np, n, UINT64_C(1));
+      o2 = (int64_t)o3;
+      o1 = c - o2;
+      c = o1;
       bo2 = wmpn_sub_1_in_place(sp, n, UINT64_C(1));
       q = q - bo2;
     } else {
@@ -159,7 +159,7 @@ int32_t wmpn_sqrtrem(uint64_t * sp, uint64_t * rp, uint64_t * np, int32_t n) {
   uint64_t o3;
   uint64_t c2;
   uint64_t * tp11;
-  uint64_t * o4;
+  uint64_t * result;
   uint64_t * nr1;
   uint64_t * nx1;
   struct __open_shift_sep_result struct_res1;
@@ -231,12 +231,12 @@ int32_t wmpn_sqrtrem(uint64_t * sp, uint64_t * rp, uint64_t * np, int32_t n) {
       tp = tp11;
     }
     if (!(c2 == UINT64_C(0))) {
-      o4 = tp;
-      struct_res1 = open_shift_sep(rp, o4);
+      result = tp;
+      struct_res1 = open_shift_sep(rp, result);
       nr1 = struct_res1.__field_0;
       nx1 = struct_res1.__field_1;
       res2 = wmpn_rshift(nr1, nx1, tn, c2);
-      IGNORE2(rp, o4);
+      IGNORE2(rp, result);
       res2;
     } else {
       wmpn_copyi1(rp, tp, tn);
